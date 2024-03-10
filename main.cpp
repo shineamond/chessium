@@ -1,5 +1,12 @@
 #include "CoreFunctions.h"
 #include "ChessBoard.h"
+#include "ChessPiece.h"
+#include "Pawn.h"
+#include "Knight.h"
+#include "Bishop.h"
+#include "Rook.h"
+#include "Queen.h"
+#include "King.h"
 
 SDL_Window* WINDOW = nullptr;
 SDL_Renderer* RENDERER = nullptr;
@@ -18,6 +25,7 @@ int main(int argc, char* args[])
     SDL_Event ev;
 
     ChessBoard board;
+    board.SetupBeginningBoard();
 
     while (!quit)
     {
@@ -30,6 +38,7 @@ int main(int argc, char* args[])
         }
 
         board.DrawChessBoard();
+        board.DrawPieces();
 
         SDL_RenderPresent(RENDERER);
     }

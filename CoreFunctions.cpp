@@ -39,6 +39,34 @@ bool Initialize()
 
 
 
+SDL_Texture* LoadTexture(const string image_path)
+{
+    SDL_Surface* image_surface = IMG_Load(image_path.c_str());
+    if (image_surface == nullptr)
+    {
+        cout << "Couldn't load image " << image_path << ". IMG_Error: " << IMG_GetError() << endl;
+    }
+
+    SDL_Texture* image_texture = nullptr;
+    if (image_surface != nullptr)
+    {
+        image_texture = SDL_CreateTextureFromSurface(RENDERER, image_surface);
+
+        if (image_texture == nullptr)
+        {
+            cout << "Couldn't create texture for image " << image_path << ". IMG_Error: " << IMG_GetError() << endl;
+        }
+    }
+
+    SDL_FreeSurface(image_surface);
+    image_surface = nullptr;
+
+    return image_texture;
+}
+
+
+
+
 void Quit()
 {
     SDL_DestroyRenderer(RENDERER);
