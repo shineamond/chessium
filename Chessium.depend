@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1710055282 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+	"CoreFunctions.h"
+
+1710054987 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
+	<iostream>
+	<SDL.h>
+
+1710055325 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
+	"CoreFunctions.h"
+
