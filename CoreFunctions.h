@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <SDL.h>
+#include <SDL_image.h>
 using namespace std;
 
 const string _WINDOW_TITLE = "CHESSIUM";

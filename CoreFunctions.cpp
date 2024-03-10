@@ -11,6 +11,13 @@ bool Initialize()
         return false;
     }
 
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+    {
+        cout << "SDL_image couldn't initialize. SDL_image error: " << IMG_GetError() << endl;
+
+        return false;
+    }
+
     WINDOW = SDL_CreateWindow(_WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _SCREEN_WIDTH, _SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (WINDOW == nullptr)
     {

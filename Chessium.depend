@@ -1,11 +1,19 @@
 # depslib dependency file v1.0
-1710055282 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1710056536 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
+	"ChessBoard.h"
 
-1710054987 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
+1710055967 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
 	<iostream>
 	<SDL.h>
+	<SDL_image.h>
 
-1710055325 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
+1710055985 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
+	"CoreFunctions.h"
+
+1710056357 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+	"ChessBoard.h"
+
+1709696690 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 
