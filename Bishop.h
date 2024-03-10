@@ -9,8 +9,7 @@ class Bishop : public ChessPiece
 {
     private:
     public:
-        Bishop();
-        ~Bishop();
-        //_CHESS_PIECE_TYPES GetPieceType() const override;
+        Bishop(const _CHESS_PIECE_COLORS color = _NONE);
+        //~Bishop();
 };
 

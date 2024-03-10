@@ -61,33 +61,33 @@ void ChessBoard::DrawChessBoard() const
 
 void ChessBoard::SetupBeginningBoard()
 {
-    pieces_positions_[0][0] = new Rook;
-    pieces_positions_[0][1] = new Knight;
-    pieces_positions_[0][2] = new Bishop;
-    pieces_positions_[0][3] = new Queen;
-    pieces_positions_[0][4] = new King;
-    pieces_positions_[0][5] = new Bishop;
-    pieces_positions_[0][6] = new Knight;
-    pieces_positions_[0][7] = new Rook;
+    pieces_positions_[0][0] = new Rook(_BLACK);
+    pieces_positions_[0][1] = new Knight(_BLACK);
+    pieces_positions_[0][2] = new Bishop(_BLACK);
+    pieces_positions_[0][3] = new Queen(_BLACK);
+    pieces_positions_[0][4] = new King(_BLACK);
+    pieces_positions_[0][5] = new Bishop(_BLACK);
+    pieces_positions_[0][6] = new Knight(_BLACK);
+    pieces_positions_[0][7] = new Rook(_BLACK);
 
     for (int i = 0; i < _BOARD_SIZE; i++)
     {
-        pieces_positions_[1][i] = new Pawn;
+        pieces_positions_[1][i] = new Pawn(_BLACK);
     }
 
     for (int i = 0; i < _BOARD_SIZE; i++)
     {
-        pieces_positions_[6][i] = new Pawn;
+        pieces_positions_[6][i] = new Pawn(_WHITE);
     }
 
-    pieces_positions_[7][0] = new Rook;
-    pieces_positions_[7][1] = new Knight;
-    pieces_positions_[7][2] = new Bishop;
-    pieces_positions_[7][3] = new Queen;
-    pieces_positions_[7][4] = new King;
-    pieces_positions_[7][5] = new Bishop;
-    pieces_positions_[7][6] = new Knight;
-    pieces_positions_[7][7] = new Rook;
+    pieces_positions_[7][0] = new Rook(_WHITE);
+    pieces_positions_[7][1] = new Knight(_WHITE);
+    pieces_positions_[7][2] = new Bishop(_WHITE);
+    pieces_positions_[7][3] = new Queen(_WHITE);
+    pieces_positions_[7][4] = new King(_WHITE);
+    pieces_positions_[7][5] = new Bishop(_WHITE);
+    pieces_positions_[7][6] = new Knight(_WHITE);
+    pieces_positions_[7][7] = new Rook(_WHITE);
 }
 
 

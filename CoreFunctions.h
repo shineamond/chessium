@@ -22,6 +22,13 @@ enum _CHESS_PIECE_TYPES
     _KING = 6
 };
 
+enum _CHESS_PIECE_COLORS
+{
+    _BLACK = -1,
+    _NONE = 0,
+    _WHITE = 1
+};
+
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
 

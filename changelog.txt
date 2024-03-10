@@ -1,15 +1,13 @@
 	In CoreFunctions:
-- Added LoadTexture function for pieces
-- Added enum _CHESS_PIECE_TYPES to track pieces
+- Added enum _CHESS_PIECE_COLORS to track pieces' colors
 
 	In class ChessBoard:
-- Added initializer and destructor
-- Added SetupBeginningBoard to simulate pieces at the beginning of the game
-- Added DrawPieces to draw pieces to the screen
+- Modified function SetupBeginningBoard to draw pieces with different colors
 
-	Added class ChessPiece as the base class:
-- Variables:
-  + image_: piece image;
-  + type_: type tracker;
+	In class ChessPiece:
+- Added variable color_ to track pieces' colors
+- Added destructor for all type of pieces
 
-	Added class Pawn, Knight, Bishop, Rook, Queen, King as derived classes for each type of piece
+	In class Pawn, Knight, Bishop, Rook, Queen, King:
+- Modified initializer
+- Removed destructor

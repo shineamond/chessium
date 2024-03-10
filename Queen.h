@@ -9,8 +9,7 @@ class Queen : public ChessPiece
 {
     private:
     public:
-        Queen();
-        ~Queen();
-        //_CHESS_PIECE_TYPES GetPieceType() const override;
+        Queen(const _CHESS_PIECE_COLORS color = _NONE);
+        //~Queen();
 };
 

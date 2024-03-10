@@ -9,8 +9,6 @@ class Knight : public ChessPiece
 {
     private:
     public:
-        Knight();
-        ~Knight();
-        //_CHESS_PIECE_TYPES GetPieceType() const override
+        Knight(const _CHESS_PIECE_COLORS color = _NONE);
+        //~Knight();
 };
-

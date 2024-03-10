@@ -9,7 +9,6 @@ class Pawn : public ChessPiece
 {
     private:
     public:
-        Pawn();
-        ~Pawn();
-        //_CHESS_PIECE_TYPES GetPieceType() const override;
+        Pawn(const _CHESS_PIECE_COLORS color = _NONE);
+        //~Pawn();
 };
