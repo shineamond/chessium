@@ -25,6 +25,7 @@ class ChessBoard
         void DrawDefaultColorSquare(const int row, const int col) const;
         void DrawClickedSquare(const int row, const int col) const;
         void DrawPiece(const int row, const int col) const;
+        void DrawMovableAndTakeableSquare(const int row, const int col, const string type) const;
         void SetupDefaultBoard();
         void DrawDefaultChessBoardAndPieces() const;
         void HandleClick(SDL_Event & ev);

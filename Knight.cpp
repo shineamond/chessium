@@ -22,6 +22,13 @@ Knight::Knight(const _CHESS_PIECE_COLORS color)
 
 
 
+void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+
+}
+
+
+
 //Knight::~Knight()
 //{
 //    type_ = _EMPTY;

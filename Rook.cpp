@@ -22,6 +22,13 @@ Rook::Rook(const _CHESS_PIECE_COLORS color)
 
 
 
+void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+
+}
+
+
+
 //Rook::~Rook()
 //{
 //    type_ = _EMPTY;

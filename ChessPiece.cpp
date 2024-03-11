@@ -16,6 +16,7 @@ ChessPiece::~ChessPiece()
     color_ = _NONE;
     SDL_DestroyTexture(image_);
     image_ = nullptr;
+    possible_moves_.clear();
 }
 
 
@@ -37,4 +38,17 @@ _CHESS_PIECE_TYPES ChessPiece::GetPieceType() const
 _CHESS_PIECE_COLORS ChessPiece::GetPieceColor() const
 {
     return color_;
+}
+
+
+vector <pair<pair <int, int>, string>> ChessPiece::GetPossibleMoves() const
+{
+    return possible_moves_;
+}
+
+
+
+void ChessPiece::UnsetPossibleMoves(const int row, const int col)
+{
+    possible_moves_.clear();
 }

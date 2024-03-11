@@ -22,6 +22,13 @@ Queen::Queen(const _CHESS_PIECE_COLORS color)
 
 
 
+void Queen::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+
+}
+
+
+
 //Queen::~Queen()
 //{
 //    type_ = _EMPTY;

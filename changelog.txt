@@ -1,6 +1,9 @@
 	In class ChessBoard:
-- Added a variable to track clicked squares
-- Added DrawDefaultColorSquare function to draw each square separately
-- Added DrawPiece function to draw each piece separately
-- Some changes to draw the starting of the game
-- Added HandleClick function to change color of squares after clicking
+- Added DrawMovableAndTakeableSquare function to show possible moves
+- Updated HandleClick function to show possible moves
+	In class ChessPiece
+- Added a vector variable to store possible moves
+- Added SetPossibleMoves virtual function
+- Added UnsetPossibleMoves to empty the vector
+	In class Pawn:
+- Added SetPossibleMoves function to show possible moves for pawns
