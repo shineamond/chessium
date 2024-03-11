@@ -25,22 +25,22 @@ int main(int argc, char* args[])
     SDL_Event ev;
 
     ChessBoard board;
-    board.SetupBeginningBoard();
+    board.SetupDefaultBoard();
+    board.DrawDefaultChessBoardAndPieces();
 
     while (!quit)
     {
         while (SDL_PollEvent(&ev) != 0)
         {
+            board.HandleClick(ev);
+
+            SDL_RenderPresent(RENDERER);
+
             if (ev.type == SDL_QUIT)
             {
                 quit = true;
             }
         }
-
-        board.DrawChessBoard();
-        board.DrawPieces();
-
-        SDL_RenderPresent(RENDERER);
     }
 
     Quit();

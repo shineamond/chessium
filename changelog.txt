@@ -1,13 +1,6 @@
-	In CoreFunctions:
-- Added enum _CHESS_PIECE_COLORS to track pieces' colors
-
 	In class ChessBoard:
-- Modified function SetupBeginningBoard to draw pieces with different colors
-
-	In class ChessPiece:
-- Added variable color_ to track pieces' colors
-- Added destructor for all type of pieces
-
-	In class Pawn, Knight, Bishop, Rook, Queen, King:
-- Modified initializer
-- Removed destructor
+- Added a variable to track clicked squares
+- Added DrawDefaultColorSquare function to draw each square separately
+- Added DrawPiece function to draw each piece separately
+- Some changes to draw the starting of the game
+- Added HandleClick function to change color of squares after clicking

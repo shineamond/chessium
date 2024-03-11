@@ -5,11 +5,12 @@
 
 ChessBoard::ChessBoard()
 {
-    for (int i = 0; i < _BOARD_SIZE; i++)
+    for (int row = 0; row < _BOARD_SIZE; row++)
     {
-        for (int j = 0; j < _BOARD_SIZE; j++)
+        for (int col = 0; col < _BOARD_SIZE; col++)
         {
-            pieces_positions_[i][j] = nullptr;
+            pieces_positions_[row][col] = nullptr;
+            //square_status_[row][col] = _NOT_CLICKED;
         }
     }
 }
@@ -18,48 +19,58 @@ ChessBoard::ChessBoard()
 
 ChessBoard::~ChessBoard()
 {
-    for (int i = 0; i < _BOARD_SIZE; i++)
-    {
-        for (int j = 0; j < _BOARD_SIZE; j++)
-        {
-            delete pieces_positions_[i][j];
-            pieces_positions_[i][j] = nullptr;
-        }
-    }
-}
-
-
-
-void ChessBoard::DrawChessBoard() const
-{
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
-    SDL_RenderClear(RENDERER);
-
-    SDL_Rect board_square {0, 0, _SQUARE_SIZE, _SQUARE_SIZE};
     for (int row = 0; row < _BOARD_SIZE; row++)
     {
-        board_square.y = row * _SQUARE_SIZE;
         for (int col = 0; col < _BOARD_SIZE; col++)
         {
-            board_square.x = col * _SQUARE_SIZE;
-
-            if ((row + col) % 2 == 0)
-            {
-                SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
-            }
-            else
-            {
-                SDL_SetRenderDrawColor(RENDERER, 130, 180, 170, 250); // LIGHT GREEN
-            }
-
-            SDL_RenderFillRect(RENDERER, &board_square);
+            delete pieces_positions_[row][col];
+            pieces_positions_[row][col] = nullptr;
+            //square_status_[row][col] = _NOT_CLICKED;
         }
     }
 }
 
 
 
-void ChessBoard::SetupBeginningBoard()
+void ChessBoard::DrawDefaultColorSquare(const int row, const int col) const
+{
+    SDL_Rect drawing_position{col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+
+    if ((row + col) % 2 == 0)
+    {
+        SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
+    }
+    else
+    {
+        SDL_SetRenderDrawColor(RENDERER, 130, 180, 170, 250); // LIGHT GREEN
+    }
+
+    SDL_RenderFillRect(RENDERER, &drawing_position);
+}
+
+
+
+void ChessBoard::DrawClickedSquare(const int row, const int col) const
+{
+    SDL_Rect drawing_position{col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+    SDL_SetRenderDrawColor(RENDERER, 230, 230, 50, 200);
+    SDL_RenderFillRect(RENDERER, &drawing_position);
+}
+
+
+
+void ChessBoard::DrawPiece(const int row, const int col) const
+{
+    if (pieces_positions_[row][col] != nullptr)
+    {
+        SDL_Rect drawing_position {col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+        SDL_RenderCopy(RENDERER, pieces_positions_[row][col] -> GetImage(), nullptr, &drawing_position);
+    }
+}
+
+
+
+void ChessBoard::SetupDefaultBoard()
 {
     pieces_positions_[0][0] = new Rook(_BLACK);
     pieces_positions_[0][1] = new Knight(_BLACK);
@@ -70,14 +81,14 @@ void ChessBoard::SetupBeginningBoard()
     pieces_positions_[0][6] = new Knight(_BLACK);
     pieces_positions_[0][7] = new Rook(_BLACK);
 
-    for (int i = 0; i < _BOARD_SIZE; i++)
+    for (int col = 0; col < _BOARD_SIZE; col++)
     {
-        pieces_positions_[1][i] = new Pawn(_BLACK);
+        pieces_positions_[1][col] = new Pawn(_BLACK);
     }
 
-    for (int i = 0; i < _BOARD_SIZE; i++)
+    for (int col = 0; col < _BOARD_SIZE; col++)
     {
-        pieces_positions_[6][i] = new Pawn(_WHITE);
+        pieces_positions_[6][col] = new Pawn(_WHITE);
     }
 
     pieces_positions_[7][0] = new Rook(_WHITE);
@@ -92,20 +103,68 @@ void ChessBoard::SetupBeginningBoard()
 
 
 
-void ChessBoard::DrawPieces() const
+void ChessBoard::DrawDefaultChessBoardAndPieces() const
 {
-    SDL_Rect drawing_position {0, 0, _SQUARE_SIZE, _SQUARE_SIZE};
+    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
+    SDL_RenderClear(RENDERER);
 
-    for (int i = 0; i < _BOARD_SIZE; i++)
+    for (int row = 0; row < _BOARD_SIZE; row++)
     {
-        drawing_position.y = i * _SQUARE_SIZE;
-
-        for (int j = 0; j < _BOARD_SIZE; j++)
+        for (int col = 0; col < _BOARD_SIZE; col++)
         {
-            if (pieces_positions_[i][j] != nullptr)
+            DrawDefaultColorSquare(row, col);
+            DrawPiece(row, col);
+        }
+    }
+}
+
+
+
+void ChessBoard::HandleClick(SDL_Event & ev)
+{
+    if (ev.type == SDL_MOUSEBUTTONDOWN)
+    {
+        int mouse_position_x, mouse_position_y;
+        SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
+
+        int clicked_square_row = mouse_position_y / _SQUARE_SIZE;
+        int clicked_square_col = mouse_position_x / _SQUARE_SIZE;
+
+        if (((clicked_square_row * _SQUARE_SIZE) != mouse_position_y) && ((clicked_square_col * _SQUARE_SIZE) != mouse_position_x))
+        {
+            if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
             {
-                drawing_position.x = j * _SQUARE_SIZE;
-                SDL_RenderCopy(RENDERER, pieces_positions_[i][j] -> GetImage(), nullptr, &drawing_position);
+                if (clicked_squares_list_.empty()) // Click a square
+                {
+                    DrawClickedSquare(clicked_square_row, clicked_square_col);
+                    DrawPiece(clicked_square_row, clicked_square_col);
+
+                    clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});
+                }
+                else
+                {
+                    if (clicked_squares_list_[0].first == clicked_square_row && clicked_squares_list_[0].second == clicked_square_col) // Unclick clicked square
+                    {
+                        DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
+                        DrawPiece(clicked_square_row, clicked_square_col);
+
+                        clicked_squares_list_.clear();
+                    }
+                    else // Unclick previously clicked square and click another square
+                    {
+                        // Unclick previously clicked square
+                        DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                        DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+
+                        clicked_squares_list_.clear();
+
+                        // Click another square
+                        DrawClickedSquare(clicked_square_row, clicked_square_col);
+                        DrawPiece(clicked_square_row, clicked_square_col);
+
+                        clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});
+                    }
+                }
             }
         }
     }

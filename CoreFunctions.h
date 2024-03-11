@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <vector>
 using namespace std;
 
 const string _WINDOW_TITLE = "CHESSIUM";
@@ -28,6 +29,20 @@ enum _CHESS_PIECE_COLORS
     _NONE = 0,
     _WHITE = 1
 };
+
+//enum _BOARD_SQUARE_COLORS
+//{
+//    _NONE = 0,
+//    _WHITE = 1,
+//    _LIGHT_GREEN = 2,
+//    _YELLOW = 3;
+//};
+
+//enum _BOARD_SQUARE_STATUS
+//{
+//    _NOT_CLICKED = 0,
+//    _CLICKED = 1
+//};
 
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
