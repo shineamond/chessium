@@ -157,15 +157,12 @@ void ChessBoard::HandleClick(SDL_Event & ev)
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
 
-                    //if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN || pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _KNIGHT)
-                    {
-                        pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
-                        vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
+                    pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
+                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
 
-                        for (int i = 0; i < (int) temp.size(); i++)
-                        {
-                            DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
-                        }
+                    for (int i = 0; i < (int) temp.size(); i++)
+                    {
+                        DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
                     }
 
                     clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});
@@ -211,15 +208,12 @@ void ChessBoard::HandleClick(SDL_Event & ev)
                         DrawClickedSquare(clicked_square_row, clicked_square_col);
                         DrawPiece(clicked_square_row, clicked_square_col);
 
-                        //if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN || pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _KNIGHT)
-                        {
-                            pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
-                            temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
+                        pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
+                        temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
 
-                            for (int i = 0; i < (int) temp.size(); i++)
-                            {
-                                DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
-                            }
+                        for (int i = 0; i < (int) temp.size(); i++)
+                        {
+                            DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
                         }
 
                         clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});

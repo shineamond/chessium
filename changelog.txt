@@ -1,6 +1,2 @@
-	In class ChessBoard:
-- Added PutPiece function to add a piece to the board
-- Added DestroyPiece function to remove a piece from the board
-
-	In class Knight:
-- Setup SetPossibleMoves function to show possible moves for knights
+	In class Bishop:
+- Setup SetPossibleMoves function to show possible moves for bishops

@@ -24,7 +24,81 @@ Bishop::Bishop(_CHESS_PIECE_COLORS color)
 
 void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
 {
+    int temp = 1;
+    while ((row - temp >= 0) && (col - temp >= 0))
+    {
+        if (pieces_positions[row - temp][col - temp] != nullptr)
+        {
+            if (pieces_positions[row - temp][col - temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), "_TAKEABLE"));
+            }
 
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while ((row - temp >= 0) && (col + temp < _BOARD_SIZE))
+    {
+        if (pieces_positions[row - temp][col + temp] != nullptr)
+        {
+            if (pieces_positions[row - temp][col + temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while ((row + temp < _BOARD_SIZE) && (col - temp >= 0))
+    {
+        if (pieces_positions[row + temp][col - temp] != nullptr)
+        {
+            if (pieces_positions[row + temp][col - temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while ((row + temp < _BOARD_SIZE) && (col + temp < _BOARD_SIZE))
+    {
+        if (pieces_positions[row + temp][col + temp] != nullptr)
+        {
+            if (pieces_positions[row + temp][col + temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), "_MOVABLE"));
+            temp++;
+        }
+    }
 }
 
 
