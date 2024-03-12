@@ -1,2 +1,2 @@
-	In class Bishop:
-- Setup SetPossibleMoves function to show possible moves for bishops
+	In class Rook, Queen, King:
+- Setup SetPossibleMoves function to show possible moves for rooks, queens, kings

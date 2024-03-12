@@ -24,7 +24,81 @@ Rook::Rook(const _CHESS_PIECE_COLORS color)
 
 void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
 {
+    int temp = 1;
+    while (row - temp >= 0)
+    {
+        if (pieces_positions[row - temp][col] != nullptr)
+        {
+            if (pieces_positions[row - temp][col] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col), "_TAKEABLE"));
+            }
 
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while (row + temp < _BOARD_SIZE)
+    {
+        if (pieces_positions[row + temp][col] != nullptr)
+        {
+            if (pieces_positions[row + temp][col] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while (col - temp >= 0)
+    {
+        if (pieces_positions[row][col - temp] != nullptr)
+        {
+            if (pieces_positions[row][col - temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row, col - temp), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row, col - temp), "_MOVABLE"));
+            temp++;
+        }
+    }
+
+    temp = 1;
+    while (col + temp < _BOARD_SIZE)
+    {
+        if (pieces_positions[row][col + temp] != nullptr)
+        {
+            if (pieces_positions[row][col + temp] -> GetPieceColor() != color_)
+            {
+                possible_moves_.push_back(make_pair(make_pair(row, col + temp), "_TAKEABLE"));
+            }
+
+            break;
+        }
+        else
+        {
+            possible_moves_.push_back(make_pair(make_pair(row, col + temp), "_MOVABLE"));
+            temp++;
+        }
+    }
 }
 
 

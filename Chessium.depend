@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1710251691 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1710254686 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
 	"ChessBoard.h"
 	"ChessPiece.h"
@@ -43,7 +43,7 @@
 1710247050 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chesspiece.h
 	"CoreFunctions.h"
 
-1710161406 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.cpp
+1710258884 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.cpp
 	"King.h"
 
 1710247043 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.h
@@ -72,10 +72,10 @@
 1710247005 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\pawn.cpp
 	"Pawn.h"
 
-1710161401 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\queen.cpp
+1710254799 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\queen.cpp
 	"Queen.h"
 
-1710161397 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\rook.cpp
+1710254633 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\rook.cpp
 	"Rook.h"
 
 1710164060 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chesspiece.cpp
