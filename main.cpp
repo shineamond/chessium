@@ -25,8 +25,11 @@ int main(int argc, char* args[])
     SDL_Event ev;
 
     ChessBoard board;
-    board.SetupDefaultBoard();
-    board.DrawDefaultChessBoardAndPieces();
+    board.PutPiece(3, 3, _KNIGHT, _WHITE);
+    board.PutPiece(2, 5, _PAWN, _BLACK);
+    board.PutPiece(1, 4, _ROOK, _WHITE);
+    board.PutPiece(3, 4, _QUEEN, _WHITE);
+    board.DrawChessBoardAndPieces();
 
     while (!quit)
     {

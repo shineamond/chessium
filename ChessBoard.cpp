@@ -78,9 +78,11 @@ void ChessBoard::DrawMovableAndTakeableSquare(const int row, const int col, cons
     {
         SDL_RenderCopy(RENDERER, LoadTexture("media/movable_square.png"), nullptr, &drawing_position);
     }
-    else if (type == "TAKEABLE")
+    else if (type == "_TAKEABLE")
     {
+        DrawDefaultColorSquare(row, col);
         SDL_RenderCopy(RENDERER, LoadTexture("media/takeable_square.png"), nullptr, &drawing_position);
+        DrawPiece(row, col);
     }
 }
 
@@ -119,7 +121,7 @@ void ChessBoard::SetupDefaultBoard()
 
 
 
-void ChessBoard::DrawDefaultChessBoardAndPieces() const
+void ChessBoard::DrawChessBoardAndPieces() const
 {
     SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
     SDL_RenderClear(RENDERER);
@@ -155,7 +157,7 @@ void ChessBoard::HandleClick(SDL_Event & ev)
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
 
-                    if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
+                    //if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN || pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _KNIGHT)
                     {
                         pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
                         vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
@@ -209,7 +211,7 @@ void ChessBoard::HandleClick(SDL_Event & ev)
                         DrawClickedSquare(clicked_square_row, clicked_square_col);
                         DrawPiece(clicked_square_row, clicked_square_col);
 
-                        if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
+                        //if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN || pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _KNIGHT)
                         {
                             pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
                             temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
@@ -225,5 +227,43 @@ void ChessBoard::HandleClick(SDL_Event & ev)
                 }
             }
         }
+    }
+}
+
+
+
+void ChessBoard::PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color)
+{
+    switch (type)
+    {
+        case _PAWN:
+            pieces_positions_[row][col] = new Pawn(color);
+            break;
+        case _KNIGHT:
+            pieces_positions_[row][col] = new Knight(color);
+            break;
+        case _BISHOP:
+            pieces_positions_[row][col] = new Bishop(color);
+            break;
+        case _ROOK:
+            pieces_positions_[row][col] = new Rook(color);
+            break;
+        case _QUEEN:
+            pieces_positions_[row][col] = new Queen(color);
+            break;
+        case _KING:
+            pieces_positions_[row][col] = new King(color);
+            break;
+    }
+}
+
+
+
+void ChessBoard::DestroyPiece(const int row, const int col)
+{
+    if (pieces_positions_[row][col] != nullptr)
+    {
+        delete pieces_positions_[row][col];
+        pieces_positions_[row][col] = nullptr;
     }
 }

@@ -1,9 +1,6 @@
 	In class ChessBoard:
-- Added DrawMovableAndTakeableSquare function to show possible moves
-- Updated HandleClick function to show possible moves
-	In class ChessPiece
-- Added a vector variable to store possible moves
-- Added SetPossibleMoves virtual function
-- Added UnsetPossibleMoves to empty the vector
-	In class Pawn:
-- Added SetPossibleMoves function to show possible moves for pawns
+- Added PutPiece function to add a piece to the board
+- Added DestroyPiece function to remove a piece from the board
+
+	In class Knight:
+- Setup SetPossibleMoves function to show possible moves for knights
