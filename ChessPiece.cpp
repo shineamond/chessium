@@ -48,7 +48,7 @@ vector <pair<pair <int, int>, string>> ChessPiece::GetPossibleMoves() const
 
 
 
-void ChessPiece::UnsetPossibleMoves(const int row, const int col)
+void ChessPiece::UnsetPossibleMoves()
 {
     possible_moves_.clear();
 }

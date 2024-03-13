@@ -103,7 +103,7 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
                 possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), "_TAKEABLE"));
             }
 
-            if ((col + 1 < _BOARD_SIZE) && (pieces_positions[row - 1][col + 1] != nullptr) && pieces_positions[row - 1][col + 1] -> GetPieceColor() == _WHITE)
+            if ((col + 1 < _BOARD_SIZE) && (pieces_positions[row - 1][col + 1] != nullptr) && pieces_positions[row - 1][col + 1] -> GetPieceColor() == _BLACK)
             {
                 possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), "_TAKEABLE"));
             }

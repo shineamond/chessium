@@ -32,6 +32,7 @@ int main(int argc, char* args[])
     board.PutPiece(2, 4, _BISHOP, _BLACK);
     board.PutPiece(1, 5, _BISHOP, _WHITE);
     board.PutPiece(1, 4, _KING, _BLACK);
+    board.PutPiece(6, 6, _PAWN, _WHITE);
     board.DrawChessBoardAndPieces();
 
     while (!quit)

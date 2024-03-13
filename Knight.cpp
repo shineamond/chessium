@@ -133,7 +133,7 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
             }
             else
             {
-                if (pieces_positions[row - 2][col - 1] -> GetPieceColor() != color_)
+                if (pieces_positions[row + 2][col - 1] -> GetPieceColor() != color_)
                 {
                     possible_moves_.push_back(make_pair(make_pair(row + 2, col - 1), "_TAKEABLE"));
                 }

@@ -1,2 +1,5 @@
-	In class Rook, Queen, King:
-- Setup SetPossibleMoves function to show possible moves for rooks, queens, kings
+	In class Pawn, Knight:
+- Fixed bugs
+	
+	In class ChessBoard:
+- In HandleClick function: pieces can move and capture another
