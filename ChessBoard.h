@@ -31,4 +31,5 @@ class ChessBoard
         void HandleClick(SDL_Event & ev);
         void PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color);
         void DestroyPiece(const int row, const int col);
+        void PromotePawn(SDL_Event & ev, const int col, const _CHESS_PIECE_COLORS color);
 };

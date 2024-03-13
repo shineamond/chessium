@@ -74,5 +74,6 @@ void Quit()
     SDL_DestroyWindow(WINDOW);
     WINDOW = nullptr;
 
+    IMG_Quit();
     SDL_Quit();
 }
