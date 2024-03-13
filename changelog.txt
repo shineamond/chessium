@@ -1,5 +1,2 @@
-	In class Pawn, Knight:
-- Fixed bugs
-	
 	In class ChessBoard:
-- In HandleClick function: pieces can move and capture another
+- Rewrote HandleClick function

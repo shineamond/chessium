@@ -148,131 +148,141 @@ void ChessBoard::HandleClick(SDL_Event & ev)
         int clicked_square_row = mouse_position_y / _SQUARE_SIZE;
         int clicked_square_col = mouse_position_x / _SQUARE_SIZE;
 
-        if (((clicked_square_row * _SQUARE_SIZE) != mouse_position_y) && ((clicked_square_col * _SQUARE_SIZE) != mouse_position_x))
+        if (clicked_squares_list_.empty()) // Click a square
         {
             if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
             {
-                if (clicked_squares_list_.empty()) // Click a square
+                DrawClickedSquare(clicked_square_row, clicked_square_col);
+                DrawPiece(clicked_square_row, clicked_square_col);
+
+                pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
+                vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
+                for (int i = 0; i < (int) temp.size(); i++)
                 {
+                    DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
+                }
+
+                clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
+            }
+        }
+        else // A square has already been clicked
+        {
+            vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPossibleMoves();
+            if (clicked_square_row == clicked_squares_list_[0].first && clicked_square_col == clicked_squares_list_[0].second) // Click the clicked square
+            {
+                for (int i = 0; i < (int) temp.size(); i++)
+                {
+                    DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
+                    DrawPiece(temp[i].first.first, temp[i].first.second);
+                }
+
+                pieces_positions_[clicked_square_row][clicked_square_col] -> UnsetPossibleMoves();
+                DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
+                DrawPiece(clicked_square_row, clicked_square_col);
+
+                clicked_squares_list_.clear();
+            }
+            else
+            {
+                bool is_move = false, is_capture = false;
+                for (int i = 0; i < (int) temp.size(); i++)
+                {
+                    if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second)
+                    {
+                        for (int j = 0; j < (int) temp.size(); j++)
+                        {
+                            DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
+                            DrawPiece(temp[j].first.first, temp[j].first.second);
+                        }
+
+
+                        if (temp[i].second == "_MOVABLE") // Move to an empty square
+                        {
+                            is_move = true;
+
+                            // Old relevant squares
+//                            for (int j = 0; j < (int) temp.size(); j++)
+//                            {
+//                                DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
+//                                DrawPiece(temp[j].first.first, temp[j].first.second);
+//                            }
+
+                            // New square
+                            pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                            DrawPiece(clicked_square_row, clicked_square_col);
+
+                            // Old squares
+//                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
+//                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
+//                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+
+//                            clicked_squares_list_.clear();
+                        }
+                        else if (temp[i].second == "_TAKEABLE") // Take another piece
+                        {
+                            is_capture = true;
+
+                            // Relevant squares
+//                            for (int j = 0; j < (int) temp.size(); j++)
+//                            {
+//                                DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
+//                                DrawPiece(temp[j].first.first, temp[j].first.second);
+//                            }
+
+                            // New square
+                            DestroyPiece(clicked_square_row, clicked_square_col);
+                            pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                            DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
+                            DrawPiece(clicked_square_row, clicked_square_col);
+
+                            // Old square
+//                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
+//                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
+//                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+
+//                            clicked_squares_list_.clear();
+                        }
+
+                        // Old squares
+                        pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
+                        pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
+                        DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+
+                        clicked_squares_list_.clear();
+
+                        break;
+                    }
+                }
+
+                if (!(is_move || is_capture))
+                {
+                    // Old relevant square
+                    for (int j = 0; j < (int) temp.size(); j++)
+                    {
+                        DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
+                        DrawPiece(temp[j].first.first, temp[j].first.second);
+                    }
+
+                    // Old clicked square
+                    DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                    DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                    pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
+                    clicked_squares_list_.clear();
+
+                    // New clicked square
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
-
                     pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
-                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
 
+                    // New relevant squares
+                    temp.clear();
+                    temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
                     for (int i = 0; i < (int) temp.size(); i++)
                     {
                         DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
                     }
 
-                    clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});
-                }
-                else
-                {
-                    if (clicked_squares_list_[0].first == clicked_square_row && clicked_squares_list_[0].second == clicked_square_col) // Unclick clicked square
-                    {
-                        DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
-                        DrawPiece(clicked_square_row, clicked_square_col);
-
-                        vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
-                        for (int i = 0; i < (int) temp.size(); i++)
-                        {
-                            DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
-                            DrawPiece(temp[i].first.first, temp[i].first.second);
-                        }
-
-                        pieces_positions_[clicked_square_row][clicked_square_col] -> UnsetPossibleMoves();
-
-                        clicked_squares_list_.clear();
-                    }
-                    else // Capture or Unclick previously clicked square and click another square
-                    {
-                        bool is_capture = false;
-                        vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPossibleMoves();
-                        for (int i = 0; i < (int) temp.size(); i++)
-                        {
-                            if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Capture
-                            {
-                                for (int j = 0; j < (int) temp.size(); j++)
-                                {
-                                    DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
-                                    DrawPiece(temp[j].first.first, temp[j].first.second);
-                                }
-                                pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
-                                DestroyPiece(clicked_square_row, clicked_square_col);
-                                DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
-
-                                pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
-                                pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
-                                DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                                clicked_squares_list_.clear();
-                                DrawPiece(clicked_square_row, clicked_square_col);
-                                is_capture = true;
-
-                                break;
-                            }
-                        }
-
-                        if (!is_capture)
-                        {
-                            // Unclick previously clicked square
-                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                            DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-
-                            vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPossibleMoves();
-                            for (int i = 0; i < (int) temp.size(); i++)
-                            {
-                                DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
-                                DrawPiece(temp[i].first.first, temp[i].first.second);
-                            }
-
-                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
-
-                            clicked_squares_list_.clear();
-
-                            temp.clear();
-
-                            // Click another square
-                            DrawClickedSquare(clicked_square_row, clicked_square_col);
-                            DrawPiece(clicked_square_row, clicked_square_col);
-
-                            pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
-                            temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
-
-                            for (int i = 0; i < (int) temp.size(); i++)
-                            {
-                                DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
-                            }
-
-                            clicked_squares_list_.push_back(pair <int, int> {clicked_square_row, clicked_square_col});
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (!clicked_squares_list_.empty())
-                {
-                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPossibleMoves();
-                    for (int i = 0; i < (int) temp.size(); i++)
-                    {
-                        if (temp[i].first.first == clicked_square_row && temp[i].first.second == clicked_square_col) // Move
-                        {
-                            for (int j = 0; j < (int) temp.size(); j++)
-                            {
-                                DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
-                                DrawPiece(temp[j].first.first, temp[j].first.second);
-                            }
-                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
-                            pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
-                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
-                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                            clicked_squares_list_.clear();
-                            DrawPiece(clicked_square_row, clicked_square_col);
-
-                            break;
-                        }
-                    }
+                    clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
                 }
             }
         }
