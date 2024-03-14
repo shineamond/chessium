@@ -25,21 +25,15 @@ int main(int argc, char* args[])
     SDL_Event ev;
 
     ChessBoard board;
-    board.PutPiece(3, 3, _KNIGHT, _WHITE);
-    board.PutPiece(2, 5, _PAWN, _BLACK);
-    board.PutPiece(0, 4, _ROOK, _WHITE);
-    board.PutPiece(3, 4, _QUEEN, _WHITE);
-    board.PutPiece(2, 4, _BISHOP, _BLACK);
-    board.PutPiece(1, 5, _BISHOP, _WHITE);
-    board.PutPiece(1, 4, _KING, _BLACK);
-    board.PutPiece(6, 6, _PAWN, _WHITE);
+    board.SetupDefaultBoard();
     board.DrawChessBoardAndPieces();
 
+    _CHESS_PIECE_COLORS side_to_move = _WHITE;
     while (!quit)
     {
         while (SDL_PollEvent(&ev) != 0)
         {
-            board.HandleClick(ev);
+            board.HandleClick(ev, side_to_move);
 
             SDL_RenderPresent(RENDERER);
 

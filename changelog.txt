@@ -1,3 +1,2 @@
 	In class ChessBoard:
-- Added PromotePawn function
-- Modified HandleClick function for pawns' promotion
+- Modified HandleClick function so that white and black take turn to move

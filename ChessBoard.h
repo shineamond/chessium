@@ -28,7 +28,7 @@ class ChessBoard
         void DrawMovableAndTakeableSquare(const int row, const int col, const string type) const;
         void SetupDefaultBoard();
         void DrawChessBoardAndPieces() const;
-        void HandleClick(SDL_Event & ev);
+        void HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move);
         void PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color);
         void DestroyPiece(const int row, const int col);
         void PromotePawn(SDL_Event & ev, const int col, const _CHESS_PIECE_COLORS color);
