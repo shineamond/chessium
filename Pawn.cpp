@@ -22,16 +22,6 @@ Pawn::Pawn(const _CHESS_PIECE_COLORS color)
 
 
 
-//Pawn::~Pawn()
-//{
-//    type_ = _EMPTY;
-//    color_ = _NONE;
-//    SDL_DestroyTexture(image_);
-//    image_ = nullptr;
-//}
-
-
-
 void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
 {
     if (color_ == _BLACK)
@@ -110,3 +100,41 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         }
     }
 }
+
+
+
+void Pawn::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+    if (color_ == _BLACK)
+    {
+        if (col - 1 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row + 1, col - 1));
+        }
+        if (col + 1 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row + 1, col + 1));
+        }
+    }
+    else if (color_ == _WHITE)
+    {
+        if (col - 1 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row - 1, col - 1));
+        }
+        if (col + 1 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row - 1, col + 1));
+        }
+    }
+}
+
+
+
+//Pawn::~Pawn()
+//{
+//    type_ = _EMPTY;
+//    color_ = _NONE;
+//    SDL_DestroyTexture(image_);
+//    image_ = nullptr;
+//}

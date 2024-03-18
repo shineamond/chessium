@@ -18,6 +18,8 @@ Rook::Rook(const _CHESS_PIECE_COLORS color)
         default:
             image_ = nullptr;
     }
+
+    moved_ = false;
 }
 
 
@@ -99,6 +101,66 @@ void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             temp++;
         }
     }
+}
+
+
+
+void Rook::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+    int temp = 1;
+    while (row - temp >= 0)
+    {
+        covering_squares_.push_back(make_pair(row - temp, col));
+        if (pieces_positions[row - temp][col] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while (row + temp <_BOARD_SIZE)
+    {
+        covering_squares_.push_back(make_pair(row + temp, col));
+        if (pieces_positions[row + temp][col] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while (col - temp >= 0)
+    {
+        covering_squares_.push_back(make_pair(row, col - temp));
+        if (pieces_positions[row][col - temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while (col + temp < _BOARD_SIZE)
+    {
+        covering_squares_.push_back(make_pair(row, col + temp));
+        if (pieces_positions[row][col + temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+}
+
+
+
+bool Rook::GetMoved() const
+{
+    return moved_;
 }
 
 

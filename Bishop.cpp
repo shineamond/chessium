@@ -103,6 +103,59 @@ void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
 
 
 
+void Bishop::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+    int temp = 1;
+    while ((row - temp >= 0) && (col - temp >= 0))
+    {
+        covering_squares_.push_back(make_pair(row - temp, col - temp));
+        if (pieces_positions[row - temp][col - temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while ((row - temp >= 0) && (col + temp < _BOARD_SIZE))
+    {
+        covering_squares_.push_back(make_pair(row - temp, col + temp));
+        if (pieces_positions[row - temp][col + temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while ((row + temp < _BOARD_SIZE) && (col - temp >= 0))
+    {
+        covering_squares_.push_back(make_pair(row + temp, col - temp));
+        if (pieces_positions[row + temp][col - temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+
+    temp = 1;
+    while ((row + temp < _BOARD_SIZE) && (col + temp <_BOARD_SIZE))
+    {
+        covering_squares_.push_back(make_pair(row + temp, col + temp));
+        if (pieces_positions[row + temp][col + temp] != nullptr)
+        {
+            break;
+        }
+
+        temp++;
+    }
+}
+
+
+
 //Bishop::~Bishop()
 //{
 //    type_ = _EMPTY;

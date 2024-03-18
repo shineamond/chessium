@@ -13,6 +13,9 @@ ChessBoard::ChessBoard()
             //square_status_[row][col] = _NOT_CLICKED;
         }
     }
+
+    legal_moves_set_ = false;
+    has_legal_moves_ = false;
 }
 
 
@@ -138,9 +141,69 @@ void ChessBoard::DrawChessBoardAndPieces() const
 
 
 
-void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
+void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
 {
-    if (ev.type == SDL_MOUSEBUTTONDOWN)
+    if (!legal_moves_set_)
+    {
+        for (int row = 0; row < _BOARD_SIZE; row++)
+        {
+            for (int col = 0; col < _BOARD_SIZE; col++)
+            {
+                if (pieces_positions_[row][col] != nullptr)
+                {
+                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move)
+                    {
+                        pieces_positions_[row][col] -> SetPossibleMoves(row, col, pieces_positions_);
+                        vector <pair<pair <int, int>, string>> temp = pieces_positions_[row][col] -> GetPossibleMoves();
+                        pieces_positions_[row][col] -> UnsetPossibleMoves();
+
+                        for (unsigned int i = 0; i < temp.size(); i++)
+                        {
+                            if (IsLegalMove(row, col, temp[i].first.first, temp[i].first.second, temp[i].second, side_to_move))
+                            {
+                                pieces_positions_[row][col] -> AddLegalMoves(temp[i].first.first, temp[i].first.second, temp[i].second);
+                            }
+                        }
+
+                        temp.clear();
+                        temp = pieces_positions_[row][col] -> GetLegalMoves();
+                        if (temp.size() != 0)
+                        {
+                            has_legal_moves_ = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        legal_moves_set_ = true;
+    }
+
+    if (!has_legal_moves_)
+    {
+        game_end = true;
+        if (IsKingInCheck(side_to_move))
+        {
+            switch (side_to_move)
+            {
+                case _BLACK:
+                    cout << "White wins\n";
+                    break;
+                case _WHITE:
+                    cout << "Black wins\n";
+                    break;
+            }
+        }
+        else
+        {
+            cout << "Draw\n";
+        }
+
+        return;
+    }
+
+
+    if (EVENT.type == SDL_MOUSEBUTTONDOWN)
     {
         int mouse_position_x, mouse_position_y;
         SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
@@ -157,9 +220,8 @@ void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
 
-                    pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
-                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
-                    for (int i = 0; i < (int) temp.size(); i++)
+                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                    for (unsigned int i = 0; i < temp.size(); i++)
                     {
                         DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
                     }
@@ -170,16 +232,15 @@ void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
         }
         else // A square has already been clicked
         {
-            vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPossibleMoves();
+            vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetLegalMoves();
             if (clicked_square_row == clicked_squares_list_[0].first && clicked_square_col == clicked_squares_list_[0].second) // Click the clicked square
             {
-                for (int i = 0; i < (int) temp.size(); i++)
+                for (unsigned int i = 0; i < temp.size(); i++)
                 {
                     DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
                     DrawPiece(temp[i].first.first, temp[i].first.second);
                 }
 
-                pieces_positions_[clicked_square_row][clicked_square_col] -> UnsetPossibleMoves();
                 DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
                 DrawPiece(clicked_square_row, clicked_square_col);
 
@@ -188,10 +249,11 @@ void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
             else
             {
                 bool is_move = false, is_capture = false;
-                for (int i = 0; i < (int) temp.size(); i++)
+                for (unsigned int i = 0; i < temp.size(); i++)
                 {
-                    if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a possible move
+                    if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a legal move
                     {
+                        // Old relevant squares
                         for (int j = 0; j < (int) temp.size(); j++)
                         {
                             DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
@@ -247,21 +309,37 @@ void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
                         }
 
                         // Old squares
-                        pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
+                        //pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetLegalMoves();
                         pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
                         DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
 
+                        for (int row = 0; row < _BOARD_SIZE; row++)
+                        {
+                            for (int col = 0; col < _BOARD_SIZE; col++)
+                            {
+                                if (pieces_positions_[row][col] != nullptr)
+                                {
+                                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move)
+                                    {
+                                        pieces_positions_[row][col] -> UnsetLegalMoves();
+                                    }
+                                }
+                            }
+                        }
+
+                        legal_moves_set_ = false;
+                        has_legal_moves_ = false;
                         clicked_squares_list_.clear();
 
                         if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
                         {
                             if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE && clicked_square_row == 0)
                             {
-                                PromotePawn(ev, clicked_square_col, _WHITE);
+                                PromotePawn(clicked_square_col, _WHITE);
                             }
                             else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK && clicked_square_row == 7)
                             {
-                                PromotePawn(ev, clicked_square_col, _BLACK);
+                                PromotePawn(clicked_square_col, _BLACK);
                             }
                         }
 
@@ -294,18 +372,16 @@ void ChessBoard::HandleClick(SDL_Event & ev, _CHESS_PIECE_COLORS & side_to_move)
                             // Old clicked square
                             DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
                             DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> UnsetPossibleMoves();
                             clicked_squares_list_.clear();
 
                             // New clicked square
                             DrawClickedSquare(clicked_square_row, clicked_square_col);
                             DrawPiece(clicked_square_row, clicked_square_col);
-                            pieces_positions_[clicked_square_row][clicked_square_col] -> SetPossibleMoves(clicked_square_row, clicked_square_col, pieces_positions_);
 
                             // New relevant squares
                             temp.clear();
-                            temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetPossibleMoves();
-                            for (int i = 0; i < (int) temp.size(); i++)
+                            temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                            for (unsigned int i = 0; i < temp.size(); i++)
                             {
                                 DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
                             }
@@ -359,7 +435,7 @@ void ChessBoard::DestroyPiece(const int row, const int col)
 
 
 
-void ChessBoard::PromotePawn(SDL_Event & ev, const int col, const _CHESS_PIECE_COLORS color)
+void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
 {
     SDL_Rect drawing_position;
     drawing_position.x = _SQUARE_SIZE * col;
@@ -383,9 +459,9 @@ void ChessBoard::PromotePawn(SDL_Event & ev, const int col, const _CHESS_PIECE_C
     bool promoted = false;
     while(!promoted)
     {
-        while (SDL_PollEvent(&ev))
+        while (SDL_PollEvent(&EVENT))
         {
-            if (ev.type == SDL_MOUSEBUTTONDOWN)
+            if (EVENT.type == SDL_MOUSEBUTTONDOWN)
             {
                 int mouse_position_x, mouse_position_y;
                 SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
@@ -457,10 +533,139 @@ void ChessBoard::PromotePawn(SDL_Event & ev, const int col, const _CHESS_PIECE_C
                     }
                 }
             }
-//            else if (ev.type == SDL_QUIT)
+//            else if (EVENT.type == SDL_QUIT)
 //            {
 //
 //            }
         }
     }
+}
+
+
+
+pair <int, int> ChessBoard::GetWhiteKingPosition() const
+{
+    for (int row = 7; row >= 0; row--)
+    {
+        for (int col = 7; col >= 0; col--)
+        {
+            if (pieces_positions_[row][col] != nullptr)
+            {
+                if (pieces_positions_[row][col] -> GetPieceType() == _KING)
+                {
+                    if (pieces_positions_[row][col] -> GetPieceColor() == _WHITE)
+                    {
+                        return (make_pair(row, col));
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+pair <int, int> ChessBoard::GetBlackKingPosition() const
+{
+    for (int row = 0; row < _BOARD_SIZE; row++)
+    {
+        for (int col = 0; col <_BOARD_SIZE; col++)
+        {
+            if (pieces_positions_[row][col] != nullptr)
+            {
+                if (pieces_positions_[row][col] -> GetPieceType() == _KING)
+                {
+                    if (pieces_positions_[row][col] -> GetPieceColor() == _BLACK)
+                    {
+                        return (make_pair(row, col));
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+bool ChessBoard::IsKingInCheck(const _CHESS_PIECE_COLORS king_color)
+{
+    pair <int, int> king_position;
+    switch (king_color)
+    {
+        case _BLACK:
+            king_position = GetBlackKingPosition();
+            break;
+
+        case _WHITE:
+            king_position = GetWhiteKingPosition();
+            break;
+    }
+
+    for (int row = 0; row < _BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < _BOARD_SIZE; col++)
+        {
+            if (pieces_positions_[row][col] != nullptr)
+            {
+                if (pieces_positions_[row][col] -> GetPieceColor() != king_color)
+                {
+                    pieces_positions_[row][col] -> SetCoveringSquares(row, col, pieces_positions_);
+                    vector <pair <int, int>> temp = pieces_positions_[row][col] -> GetCoveringSquares();
+                    pieces_positions_[row][col] -> UnsetCoveringSquares();
+
+                    for (unsigned int i = 0; i < temp.size(); i++)
+                    {
+                        if (temp[i].first == king_position.first && temp[i].second == king_position.second)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+
+
+bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const string move_type, const _CHESS_PIECE_COLORS side_to_move)
+{
+    bool is_legal = true;
+
+    if (move_type == "_MOVABLE")
+    {
+        // Try to move
+        pieces_positions_[new_row][new_col] = pieces_positions_[old_row][old_col];
+        pieces_positions_[old_row][old_col] = nullptr;
+
+        if (IsKingInCheck(side_to_move) == true)
+        {
+            is_legal = false;
+        }
+
+        // Revert
+        pieces_positions_[old_row][old_col] = pieces_positions_[new_row][new_col];
+        pieces_positions_[new_row][new_col] = nullptr;
+    }
+    else if (move_type == "_TAKEABLE")
+    {
+        //Try to move
+        ChessPiece* temp = pieces_positions_[new_row][new_col];
+        pieces_positions_[new_row][new_col] = pieces_positions_[old_row][old_col];
+        pieces_positions_[old_row][old_col] = nullptr;
+
+        if (IsKingInCheck(side_to_move) == true)
+        {
+            is_legal = false;
+        }
+
+        //Revert
+        pieces_positions_[old_row][old_col] = pieces_positions_[new_row][new_col];
+        pieces_positions_[new_row][new_col] = temp;
+        temp = nullptr;
+    }
+
+    return is_legal;
 }

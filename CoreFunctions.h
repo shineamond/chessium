@@ -46,6 +46,7 @@ enum _CHESS_PIECE_COLORS
 
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
+extern SDL_Event EVENT;
 
 bool Initialize();
 SDL_Texture* LoadTexture(const string image_path);

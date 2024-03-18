@@ -159,6 +159,63 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
 
 
 
+void Knight::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE])
+{
+    if (row - 2 >= 0)
+    {
+        if (col - 1 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row - 2, col - 1));
+        }
+
+        if (col + 1 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row - 2, col + 1));
+        }
+    }
+
+    if (row - 1 >= 0)
+    {
+        if (col - 2 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row - 1, col - 2));
+        }
+
+        if (col + 2 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row - 1, col + 2));
+        }
+    }
+
+    if (row + 1 < _BOARD_SIZE)
+    {
+        if (col - 2 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row + 1, col - 2));
+        }
+
+        if (col + 2 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row + 1, col + 2));
+        }
+    }
+
+    if (row + 2 < _BOARD_SIZE)
+    {
+        if (col - 1 >= 0)
+        {
+            covering_squares_.push_back(make_pair(row + 2, col - 1));
+        }
+
+        if (col + 1 < _BOARD_SIZE)
+        {
+            covering_squares_.push_back(make_pair(row + 2, col + 1));
+        }
+    }
+}
+
+
+
 //Knight::~Knight()
 //{
 //    type_ = _EMPTY;
