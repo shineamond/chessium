@@ -158,10 +158,10 @@ void Rook::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_p
 
 
 
-bool Rook::GetMoved() const
-{
-    return moved_;
-}
+//bool Rook::GetMoved() const
+//{
+//    return moved_;
+//}
 
 
 

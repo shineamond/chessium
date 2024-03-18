@@ -217,10 +217,10 @@ void King::SetCoveringSquares(const int row, const int col, ChessPiece* pieces_p
 
 
 
-bool King::GetMoved() const
-{
-    return moved_;
-}
+//bool King::GetMoved() const
+//{
+//    return moved_;
+//}
 
 
 

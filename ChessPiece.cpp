@@ -89,3 +89,17 @@ vector <pair<pair <int, int>, string>> ChessPiece::GetLegalMoves() const
 {
     return legal_moves_;
 }
+
+
+
+void ChessPiece::SetMoved()
+{
+    moved_ = true;
+}
+
+
+
+bool ChessPiece::GetMoved() const
+{
+    return moved_;
+}

@@ -13,6 +13,7 @@ class ChessPiece
         vector <pair<pair <int, int>, string>> possible_moves_;
         vector <pair <int, int>> covering_squares_;
         vector <pair<pair <int, int>, string>> legal_moves_;
+        bool moved_;
 
     public:
 //        virtual ChessPiece() = 0;
@@ -29,4 +30,6 @@ class ChessPiece
         void AddLegalMoves(const int row, const int col, const string move_type);
         void UnsetLegalMoves();
         vector <pair<pair <int, int>, string>> GetLegalMoves() const;
+        void SetMoved();
+        bool GetMoved() const;
 };

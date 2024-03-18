@@ -8,7 +8,6 @@
 class King : public ChessPiece
 {
     private:
-        bool moved_;
 
     public:
         King(const _CHESS_PIECE_COLORS color = _NONE);

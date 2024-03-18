@@ -1,20 +1,9 @@
-	SDL_Event is now a global variable
-	The game should end after a number of moves
-	All moves have to be legal now
+	Added legal castling
+	Castling rules: both the king and the rook used for castling haven't moved previously; there aren't any pieces between the king and the rook used for castling; the king is not in a check; the squares the king has to pass shouldn't be covered
 	
 	In class ChessBoard:
-- Added legal_moves_set_ to track setting up legal moves
-- Added has_legal_moves to check whether there is a legal move
-- Changed HandleClick function to HandleGame function
-- In HandleClick function:
- + All legal moves is set before choosing a move
- + Check if the game comes to an end
-- Added GetWhiteKingPosition and GetBlackKingPosition to get the position of kings
-- Added IsKingInCheck function to check if a king is in check
-- Added IsLegalMove to check all possible moves whether they are legal or not
+- Modified HandleGame function for castling
+- Added AddLegalCastling function
+
 	In class ChessPiece:
-- Added vector variables for legal moves and covering squares
-- Added SetCoveringSquares virtual function, UnsetCoveringSquares function and GetCoveringSquares function
-- Added AddLegalMoves function, UnsetLegalMoves function and GetLegalMoves function
-	In class Pawn, Knight, Bishop, Rook, Queen, King:
-- Added SetCoveringSquares function, supporting checking if a move is legal
+- Added a boolean variable to check if a piece has moved

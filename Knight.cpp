@@ -18,6 +18,8 @@ Knight::Knight(const _CHESS_PIECE_COLORS color)
         default:
             image_ = nullptr;
     }
+
+    moved_ = true;
 }
 
 

@@ -38,4 +38,5 @@ class ChessBoard
         pair<int, int> GetBlackKingPosition() const;
         bool IsKingInCheck(const _CHESS_PIECE_COLORS king_color);
         bool IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const string move_type, const _CHESS_PIECE_COLORS side_to_move);
+        void AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move);
 };
