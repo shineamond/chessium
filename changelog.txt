@@ -1,10 +1,9 @@
-	Added En Passant
-	Added moves log
-	
+* General:
+- Added conditions to end the game in a draw after 50 moves without a capture or a pawn move
 
-	Added enum for types of moves
-	In class ChessBoard:
-- Added AddEnPassantMove function
-- Modified HandleGame function to handle EnPassant moves
 
-	Added class MoveInformation to log moves
+* Particular:
+- In class ChessBoard
+ + Added variables to track side to move first and side to move
+ + Modified HandleGame function to check for a draw after 50 moves without a capture or a pawn move
+ + Added IsDraw50Moves function

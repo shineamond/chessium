@@ -3,7 +3,13 @@
 
 
 
-MoveInformation::MoveInformation() {}
+MoveInformation::MoveInformation()
+{
+    moved_piece_ = _EMPTY;
+    old_position_ = make_pair(-1, -1);
+    new_position_ = make_pair(-1, -1);
+    move_type_ = _NONE;
+}
 
 
 
@@ -27,6 +33,13 @@ MoveInformation::MoveInformation(const _MOVE_TYPES move_type)
 _CHESS_PIECE_TYPES MoveInformation::GetMovedPiece() const
 {
     return moved_piece_;
+}
+
+
+
+_MOVE_TYPES MoveInformation::GetMoveType() const
+{
+    return move_type_;
 }
 
 

@@ -13,7 +13,7 @@
 ChessPiece::~ChessPiece()
 {
     type_ = _EMPTY;
-    color_ = _NONE;
+    color_ = _COLORLESS;
     SDL_DestroyTexture(image_);
     image_ = nullptr;
     possible_moves_.clear();

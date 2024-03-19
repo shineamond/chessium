@@ -1,5 +1,4 @@
 #include "ChessBoard.h"
-#include "ChessPiece.h"
 
 
 
@@ -16,6 +15,9 @@ ChessBoard::ChessBoard()
 
     legal_moves_set_ = false;
     has_legal_moves_ = false;
+    side_to_move_first_ = _WHITE;
+    side_to_move_ = _WHITE;
+    no_capture_or_pawns_moves_ = 0;
 }
 
 
@@ -141,7 +143,7 @@ void ChessBoard::DrawChessBoardAndPieces() const
 
 
 
-void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
+void ChessBoard::HandleGame(bool & game_end)
 {
     if (!legal_moves_set_)
     {
@@ -151,7 +153,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
             {
                 if (pieces_positions_[row][col] != nullptr)
                 {
-                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move)
+                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move_)
                     {
                         pieces_positions_[row][col] -> SetPossibleMoves(row, col, pieces_positions_);
                         vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[row][col] -> GetPossibleMoves();
@@ -159,7 +161,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
 
                         for (unsigned int i = 0; i < temp.size(); i++)
                         {
-                            if (IsLegalMove(row, col, temp[i].first.first, temp[i].first.second, temp[i].second, side_to_move))
+                            if (IsLegalMove(row, col, temp[i].first.first, temp[i].first.second, temp[i].second))
                             {
                                 pieces_positions_[row][col] -> AddLegalMoves(temp[i].first.first, temp[i].first.second, temp[i].second);
                             }
@@ -176,8 +178,8 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
             }
         }
 
-        AddLegalCastling(side_to_move);
-        if (AddEnPassantMove(side_to_move))
+        AddLegalCastling();
+        if (AddEnPassantMove())
         {
             has_legal_moves_ = true;
         }
@@ -188,9 +190,9 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
     if (!has_legal_moves_)
     {
         game_end = true;
-        if (IsKingInCheck(side_to_move))
+        if (IsKingInCheck(side_to_move_))
         {
-            switch (side_to_move)
+            switch (side_to_move_)
             {
                 case _BLACK:
                     cout << "White wins\n";
@@ -223,7 +225,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
         {
             if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
             {
-                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move)
+                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
                 {
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
@@ -277,9 +279,6 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                 // New square
                                 pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
                                 DrawPiece(clicked_square_row, clicked_square_col);
-
-//                                moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
-//                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), _MOVE));
                             }
                             else if (temp[i].second == _CAPTURE) // Take another piece
                             {
@@ -291,8 +290,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                 DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
                                 DrawPiece(clicked_square_row, clicked_square_col);
 
-//                                moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
-//                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), _CAPTURE));
+                                //no_capture_or_pawns_moves_ += 1;
                             }
                             else if (temp[i].second == _EN_PASSANT)
                             {
@@ -302,7 +300,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                 pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
                                 DrawPiece(clicked_square_row, clicked_square_col);
 
-                                switch (side_to_move)
+                                switch (side_to_move_)
                                 {
                                     case _BLACK:
                                         DestroyPiece(clicked_square_row - 1, clicked_square_col);
@@ -319,6 +317,8 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                     default:
                                         break;
                                 }
+
+                                //no_capture_or_pawns_moves_ = 0;
                             }
 
                             pieces_positions_[clicked_square_row][clicked_square_col] -> SetMoved();
@@ -416,7 +416,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                             {
                                 if (pieces_positions_[row][col] != nullptr)
                                 {
-                                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move)
+                                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move_)
                                     {
                                         pieces_positions_[row][col] -> UnsetLegalMoves();
                                     }
@@ -440,13 +440,24 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                             }
                         }
 
-                        if (side_to_move == _WHITE)
+                        if (side_to_move_ == _WHITE)
                         {
-                            side_to_move = _BLACK;
+                            side_to_move_ = _BLACK;
                         }
-                        else if (side_to_move == _BLACK)
+                        else if (side_to_move_ == _BLACK)
                         {
-                            side_to_move = _WHITE;
+                            side_to_move_ = _WHITE;
+                        }
+
+                        if (side_to_move_ == side_to_move_first_)
+                        {
+                            if (IsDraw50Moves())
+                            {
+                                cout << "Draw\n";
+                                game_end = true;
+
+                                return;
+                            }
                         }
 
                         break;
@@ -457,13 +468,13 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                 {
                     if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
                     {
-                        if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move)
+                        if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
                         {
                             // Old relevant square
-                            for (int j = 0; j < (int) temp.size(); j++)
+                            for (int i = 0; i < (int) temp.size(); i++)
                             {
-                                DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
-                                DrawPiece(temp[j].first.first, temp[j].first.second);
+                                DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
+                                DrawPiece(temp[i].first.first, temp[i].first.second);
                             }
 
                             // Old clicked square
@@ -732,7 +743,7 @@ bool ChessBoard::IsKingInCheck(const _CHESS_PIECE_COLORS king_color)
 
 
 
-bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const _MOVE_TYPES move_type, const _CHESS_PIECE_COLORS side_to_move)
+bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const _MOVE_TYPES move_type)
 {
     bool is_legal = true;
 
@@ -742,7 +753,7 @@ bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new
         pieces_positions_[new_row][new_col] = pieces_positions_[old_row][old_col];
         pieces_positions_[old_row][old_col] = nullptr;
 
-        if (IsKingInCheck(side_to_move) == true)
+        if (IsKingInCheck(side_to_move_) == true)
         {
             is_legal = false;
         }
@@ -758,7 +769,7 @@ bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new
         pieces_positions_[new_row][new_col] = pieces_positions_[old_row][old_col];
         pieces_positions_[old_row][old_col] = nullptr;
 
-        if (IsKingInCheck(side_to_move) == true)
+        if (IsKingInCheck(side_to_move_) == true)
         {
             is_legal = false;
         }
@@ -774,9 +785,9 @@ bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new
 
 
 
-void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
+void ChessBoard::AddLegalCastling()
 {
-    switch (side_to_move)
+    switch (side_to_move_)
     {
         case _BLACK:
             if (pieces_positions_[0][4] != nullptr)
@@ -1061,7 +1072,7 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
 
 
 
-bool ChessBoard::AddEnPassantMove(const _CHESS_PIECE_COLORS side_to_move)
+bool ChessBoard::AddEnPassantMove()
 {
     bool has_en_passant_moves = false;
     unsigned int log_size = moves_log_.size();
@@ -1074,7 +1085,7 @@ bool ChessBoard::AddEnPassantMove(const _CHESS_PIECE_COLORS side_to_move)
         {
             pair <int, int> new_position = last_move.GetNewPosition();
 
-            switch (side_to_move)
+            switch (side_to_move_)
             {
                 case _BLACK:
                     if (new_position.first - last_move.GetOldPosition().first == -2)
@@ -1153,4 +1164,34 @@ bool ChessBoard::AddEnPassantMove(const _CHESS_PIECE_COLORS side_to_move)
     }
 
     return has_en_passant_moves;
+}
+
+
+
+bool ChessBoard::IsDraw50Moves()
+{
+    int log_size = moves_log_.size();
+
+    if (moves_log_[log_size - 2].GetMoveType() == _CAPTURE || moves_log_[log_size - 2].GetMovedPiece() == _PAWN)
+    {
+        no_capture_or_pawns_moves_ = 0;
+    }
+    else
+    {
+        if (moves_log_[log_size - 1].GetMoveType() == _CAPTURE || moves_log_[log_size - 1].GetMovedPiece() == _PAWN)
+        {
+            no_capture_or_pawns_moves_ = 0;
+        }
+        else
+        {
+            no_capture_or_pawns_moves_ += 1;
+        }
+    }
+
+    if (no_capture_or_pawns_moves_ == 50)
+    {
+        return true;
+    }
+
+    return false;
 }

@@ -26,12 +26,13 @@ enum _CHESS_PIECE_TYPES
 enum _CHESS_PIECE_COLORS
 {
     _BLACK = -1,
-    _NONE = 0,
+    _COLORLESS = 0,
     _WHITE = 1
 };
 
 enum _MOVE_TYPES
 {
+    _NONE,
     _MOVE,
     _CAPTURE,
     _CASTLE,

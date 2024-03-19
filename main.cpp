@@ -38,14 +38,13 @@ int main(int argc, char* args[])
 //    board.PutPiece(7, 7, _KING, _BLACK);
     board.DrawChessBoardAndPieces();
 
-    _CHESS_PIECE_COLORS side_to_move = _WHITE;
     while (!quit)
     {
         while (SDL_PollEvent(&EVENT) != 0)
         {
             if (!game_end)
             {
-                board.HandleGame(side_to_move, game_end);
+                board.HandleGame(game_end);
 
                 SDL_RenderPresent(RENDERER);
             }

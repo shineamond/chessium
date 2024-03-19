@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1710811455 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1710858178 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
 	"ChessBoard.h"
 	"ChessPiece.h"
@@ -11,7 +11,7 @@
 	"King.h"
 	"MoveInformation.h"
 
-1710808898 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
+1710859979 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -20,11 +20,10 @@
 1710343611 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
 	"CoreFunctions.h"
 
-1710804547 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+1710859936 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
 	"ChessBoard.h"
-	"ChessPiece.h"
 
-1710813056 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
+1710859895 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -38,7 +37,7 @@
 1710804459 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\bishop.cpp
 	"Bishop.h"
 
-1710689042 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\bishop.h
+1710860038 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\bishop.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
@@ -48,26 +47,26 @@
 1710804530 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.cpp
 	"King.h"
 
-1710772283 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.h
+1710860052 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\king.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
 1710804431 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\knight.cpp
 	"Knight.h"
 
-1710688978 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\knight.h
+1710860031 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\knight.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
-1710688947 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\pawn.h
+1710860002 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\pawn.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
-1710772260 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\rook.h
+1710860042 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\rook.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
-1710689097 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\queen.h
+1710860047 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\queen.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 
@@ -80,13 +79,13 @@
 1710804480 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\rook.cpp
 	"Rook.h"
 
-1710804364 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chesspiece.cpp
+1710860069 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chesspiece.cpp
 	"ChessPiece.h"
 	"CoreFunctions.h"
 
-1710812564 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.h
+1710859623 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.h
 	"CoreFunctions.h"
 
-1710807700 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.cpp
+1710860083 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.cpp
 	"MoveInformation.h"
 
