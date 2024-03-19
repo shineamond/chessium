@@ -30,6 +30,14 @@ enum _CHESS_PIECE_COLORS
     _WHITE = 1
 };
 
+enum _MOVE_TYPES
+{
+    _MOVE,
+    _CAPTURE,
+    _CASTLE,
+    _EN_PASSANT
+};
+
 //enum _BOARD_SQUARE_COLORS
 //{
 //    _NONE = 0,

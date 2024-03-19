@@ -50,7 +50,7 @@ void ChessPiece::UnsetPossibleMoves()
 }
 
 
-vector <pair<pair <int, int>, string>> ChessPiece::GetPossibleMoves() const
+vector <pair<pair <int, int>, _MOVE_TYPES>> ChessPiece::GetPossibleMoves() const
 {
     return possible_moves_;
 }
@@ -71,7 +71,7 @@ vector <pair <int, int>> ChessPiece::GetCoveringSquares() const
 
 
 
-void ChessPiece::AddLegalMoves(const int row, const int col, const string move_type)
+void ChessPiece::AddLegalMoves(const int row, const int col, const _MOVE_TYPES move_type)
 {
     legal_moves_.push_back(make_pair(make_pair(row, col), move_type));
 }
@@ -85,7 +85,7 @@ void ChessPiece::UnsetLegalMoves()
 
 
 
-vector <pair<pair <int, int>, string>> ChessPiece::GetLegalMoves() const
+vector <pair<pair <int, int>, _MOVE_TYPES>> ChessPiece::GetLegalMoves() const
 {
     return legal_moves_;
 }

@@ -7,6 +7,7 @@
 #include "Rook.h"
 #include "Queen.h"
 #include "King.h"
+#include "MoveInformation.h"
 
 SDL_Window* WINDOW = nullptr;
 SDL_Renderer* RENDERER = nullptr;

@@ -73,15 +73,15 @@ void ChessBoard::DrawPiece(const int row, const int col) const
 
 
 
-void ChessBoard::DrawMovableAndTakeableSquare(const int row, const int col, const string type) const
+void ChessBoard::DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const
 {
     SDL_Rect drawing_position {col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
 
-    if (type == "_MOVABLE" || type == "_CASTLE")
+    if (move_type == _MOVE || move_type == _CASTLE)
     {
         SDL_RenderCopy(RENDERER, LoadTexture("media/movable_square.png"), nullptr, &drawing_position);
     }
-    else if (type == "_TAKEABLE")
+    else if (move_type == _CAPTURE || move_type == _EN_PASSANT)
     {
         DrawDefaultColorSquare(row, col);
         SDL_RenderCopy(RENDERER, LoadTexture("media/takeable_square.png"), nullptr, &drawing_position);
@@ -154,7 +154,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                     if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move)
                     {
                         pieces_positions_[row][col] -> SetPossibleMoves(row, col, pieces_positions_);
-                        vector <pair<pair <int, int>, string>> temp = pieces_positions_[row][col] -> GetPossibleMoves();
+                        vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[row][col] -> GetPossibleMoves();
                         pieces_positions_[row][col] -> UnsetPossibleMoves();
 
                         for (unsigned int i = 0; i < temp.size(); i++)
@@ -177,6 +177,10 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
         }
 
         AddLegalCastling(side_to_move);
+        if (AddEnPassantMove(side_to_move))
+        {
+            has_legal_moves_ = true;
+        }
 
         legal_moves_set_ = true;
     }
@@ -224,10 +228,10 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                     DrawClickedSquare(clicked_square_row, clicked_square_col);
                     DrawPiece(clicked_square_row, clicked_square_col);
 
-                    vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                    vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
                     for (unsigned int i = 0; i < temp.size(); i++)
                     {
-                        DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
+                        DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
                     }
 
                     clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
@@ -236,7 +240,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
         }
         else // A square has already been clicked
         {
-            vector <pair<pair <int, int>, string>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetLegalMoves();
+            vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetLegalMoves();
             if (clicked_square_row == clicked_squares_list_[0].first && clicked_square_col == clicked_squares_list_[0].second) // Click the clicked square
             {
                 for (unsigned int i = 0; i < temp.size(); i++)
@@ -264,17 +268,20 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                             DrawPiece(temp[j].first.first, temp[j].first.second);
                         }
 
-                        if (temp[i].second == "_MOVABLE" || temp[i].second == "_TAKEABLE")
+                        if (temp[i].second == _MOVE || temp[i].second == _CAPTURE || temp[i].second == _EN_PASSANT)
                         {
-                            if (temp[i].second == "_MOVABLE") // Move to an empty square
+                            if (temp[i].second == _MOVE) // Move to an empty square
                             {
                                 is_move = true;
 
                                 // New square
                                 pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
                                 DrawPiece(clicked_square_row, clicked_square_col);
+
+//                                moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
+//                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), _MOVE));
                             }
-                            else if (temp[i].second == "_TAKEABLE") // Take another piece
+                            else if (temp[i].second == _CAPTURE) // Take another piece
                             {
                                 is_capture = true;
 
@@ -283,15 +290,46 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                 pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
                                 DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
                                 DrawPiece(clicked_square_row, clicked_square_col);
+
+//                                moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
+//                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), _CAPTURE));
+                            }
+                            else if (temp[i].second == _EN_PASSANT)
+                            {
+                                is_capture = true;
+
+                                // New square
+                                pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                                DrawPiece(clicked_square_row, clicked_square_col);
+
+                                switch (side_to_move)
+                                {
+                                    case _BLACK:
+                                        DestroyPiece(clicked_square_row - 1, clicked_square_col);
+                                        pieces_positions_[clicked_square_row - 1][clicked_square_col] = nullptr;
+                                        DrawDefaultColorSquare(clicked_square_row - 1, clicked_square_col);
+                                        break;
+
+                                    case _WHITE:
+                                        DestroyPiece(clicked_square_row + 1, clicked_square_col);
+                                        pieces_positions_[clicked_square_row + 1][clicked_square_col] = nullptr;
+                                        DrawDefaultColorSquare(clicked_square_row + 1, clicked_square_col);
+                                        break;
+
+                                    default:
+                                        break;
+                                }
                             }
 
                             pieces_positions_[clicked_square_row][clicked_square_col] -> SetMoved();
+                            moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
+                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), temp[i].second));
 
                             // Old squares
                             pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
                             DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
                         }
-                        else if (temp[i].second == "_CASTLE")
+                        else if (temp[i].second == _CASTLE)
                         {
                             is_castle = true;
 
@@ -368,6 +406,8 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                                     }
                                 }
                             }
+
+                            moves_log_.push_back(MoveInformation(_CASTLE));
                         }
 
                         for (int row = 0; row < _BOARD_SIZE; row++)
@@ -440,7 +480,7 @@ void ChessBoard::HandleGame(_CHESS_PIECE_COLORS & side_to_move, bool & game_end)
                             temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
                             for (unsigned int i = 0; i < temp.size(); i++)
                             {
-                                DrawMovableAndTakeableSquare(temp[i].first.first, temp[i].first.second, temp[i].second);
+                                DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
                             }
 
                             clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
@@ -692,11 +732,11 @@ bool ChessBoard::IsKingInCheck(const _CHESS_PIECE_COLORS king_color)
 
 
 
-bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const string move_type, const _CHESS_PIECE_COLORS side_to_move)
+bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new_row, const int new_col, const _MOVE_TYPES move_type, const _CHESS_PIECE_COLORS side_to_move)
 {
     bool is_legal = true;
 
-    if (move_type == "_MOVABLE")
+    if (move_type == _MOVE)
     {
         // Try to move
         pieces_positions_[new_row][new_col] = pieces_positions_[old_row][old_col];
@@ -711,7 +751,7 @@ bool ChessBoard::IsLegalMove(const int old_row, const int old_col, const int new
         pieces_positions_[old_row][old_col] = pieces_positions_[new_row][new_col];
         pieces_positions_[new_row][new_col] = nullptr;
     }
-    else if (move_type == "_TAKEABLE")
+    else if (move_type == _CAPTURE)
     {
         //Try to move
         ChessPiece* temp = pieces_positions_[new_row][new_col];
@@ -801,7 +841,7 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
 
                                                     if (can_castle)
                                                     {
-                                                        pieces_positions_[0][4] -> AddLegalMoves(0, 2, "_CASTLE");
+                                                        pieces_positions_[0][4] -> AddLegalMoves(0, 2, _CASTLE);
                                                     }
                                                 }
                                             }
@@ -861,7 +901,7 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
 
                                                     if (can_castle)
                                                     {
-                                                        pieces_positions_[0][4] -> AddLegalMoves(0, 6, "_CASTLE");
+                                                        pieces_positions_[0][4] -> AddLegalMoves(0, 6, _CASTLE);
                                                     }
                                                 }
                                             }
@@ -939,7 +979,7 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
 
                                                     if (can_castle)
                                                     {
-                                                        pieces_positions_[7][4] -> AddLegalMoves(7, 2, "_CASTLE");
+                                                        pieces_positions_[7][4] -> AddLegalMoves(7, 2, _CASTLE);
                                                     }
                                                 }
                                             }
@@ -999,7 +1039,7 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
 
                                                     if (can_castle)
                                                     {
-                                                        pieces_positions_[7][4] -> AddLegalMoves(7, 6, "_CASTLE");
+                                                        pieces_positions_[7][4] -> AddLegalMoves(7, 6, _CASTLE);
                                                     }
                                                 }
                                             }
@@ -1017,4 +1057,100 @@ void ChessBoard::AddLegalCastling(const _CHESS_PIECE_COLORS & side_to_move)
         default:
             break;
     }
+}
+
+
+
+bool ChessBoard::AddEnPassantMove(const _CHESS_PIECE_COLORS side_to_move)
+{
+    bool has_en_passant_moves = false;
+    unsigned int log_size = moves_log_.size();
+
+    if (log_size > 0)
+    {
+        MoveInformation last_move = moves_log_[log_size - 1];
+
+        if (last_move.GetMovedPiece() == _PAWN)
+        {
+            pair <int, int> new_position = last_move.GetNewPosition();
+
+            switch (side_to_move)
+            {
+                case _BLACK:
+                    if (new_position.first - last_move.GetOldPosition().first == -2)
+                    {
+                        if (new_position.second - 1 >= 0)
+                        {
+                            if (pieces_positions_[new_position.first][new_position.second - 1] != nullptr)
+                            {
+                                if (pieces_positions_[new_position.first][new_position.second - 1] -> GetPieceType() == _PAWN)
+                                {
+                                    if (pieces_positions_[new_position.first][new_position.second - 1] -> GetPieceColor() == _BLACK)
+                                    {
+                                        pieces_positions_[new_position.first][new_position.second - 1] -> AddLegalMoves(new_position.first + 1, new_position.second, _EN_PASSANT);
+                                        has_en_passant_moves = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (new_position.second + 1 < _BOARD_SIZE)
+                        {
+                            if (pieces_positions_[new_position.first][new_position.second + 1] != nullptr)
+                            {
+                                if (pieces_positions_[new_position.first][new_position.second + 1] -> GetPieceType() == _PAWN)
+                                {
+                                    if (pieces_positions_[new_position.first][new_position.second + 1] -> GetPieceColor() == _BLACK)
+                                    {
+                                        pieces_positions_[new_position.first][new_position.second + 1] -> AddLegalMoves(new_position.first + 1, new_position.second, _EN_PASSANT);
+                                        has_en_passant_moves = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case _WHITE:
+                    if (new_position.first - last_move.GetOldPosition().first == 2)
+                    {
+                        if (new_position.second - 1 >= 0)
+                        {
+                            if (pieces_positions_[new_position.first][new_position.second - 1] != nullptr)
+                            {
+                                if (pieces_positions_[new_position.first][new_position.second - 1] -> GetPieceType() == _PAWN)
+                                {
+                                    if (pieces_positions_[new_position.first][new_position.second - 1] -> GetPieceColor() == _WHITE)
+                                    {
+                                        pieces_positions_[new_position.first][new_position.second - 1] -> AddLegalMoves(new_position.first - 1, new_position.second, _EN_PASSANT);
+                                        has_en_passant_moves = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (new_position.second + 1 < _BOARD_SIZE)
+                        {
+                            if (pieces_positions_[new_position.first][new_position.second + 1] != nullptr)
+                            {
+                                if (pieces_positions_[new_position.first][new_position.second + 1] -> GetPieceType() == _PAWN)
+                                {
+                                    if (pieces_positions_[new_position.first][new_position.second + 1] -> GetPieceColor() == _WHITE)
+                                    {
+                                        pieces_positions_[new_position.first][new_position.second + 1] -> AddLegalMoves(new_position.first - 1, new_position.second, _EN_PASSANT);
+                                        has_en_passant_moves = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    return has_en_passant_moves;
 }

@@ -32,13 +32,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - 2][col - 1] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 2, col - 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 2, col - 1), _MOVE));
             }
             else
             {
                 if (pieces_positions[row - 2][col - 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 2, col - 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 2, col - 1), _CAPTURE));
                 }
             }
         }
@@ -47,13 +47,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - 2][col + 1] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 2, col + 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 2, col + 1), _MOVE));
             }
             else
             {
                 if (pieces_positions[row - 2][col + 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 2, col + 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 2, col + 1), _CAPTURE));
                 }
             }
         }
@@ -65,13 +65,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - 1][col - 2] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 2), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 2), _MOVE));
             }
             else
             {
                 if (pieces_positions[row - 1][col - 2] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 1, col - 2), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 1, col - 2), _CAPTURE));
                 }
             }
         }
@@ -80,13 +80,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - 1][col + 2] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 2), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 2), _MOVE));
             }
             else
             {
                 if (pieces_positions[row - 1][col + 2] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 1, col + 2), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 1, col + 2), _CAPTURE));
                 }
             }
         }
@@ -98,13 +98,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + 1][col - 2] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 2), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 2), _MOVE));
             }
             else
             {
                 if (pieces_positions[row + 1][col - 2] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 1, col - 2), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 1, col - 2), _CAPTURE));
                 }
             }
         }
@@ -113,13 +113,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + 1][col + 2] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 2), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 2), _MOVE));
             }
             else
             {
                 if (pieces_positions[row + 1][col + 2] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 1, col + 2), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 1, col + 2), _CAPTURE));
                 }
             }
         }
@@ -131,13 +131,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + 2][col - 1] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 2, col - 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 2, col - 1), _MOVE));
             }
             else
             {
                 if (pieces_positions[row + 2][col - 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 2, col - 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 2, col - 1), _CAPTURE));
                 }
             }
         }
@@ -146,13 +146,13 @@ void Knight::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + 2][col + 1] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 2, col + 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 2, col + 1), _MOVE));
             }
             else
             {
                 if (pieces_positions[row + 2][col + 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 2, col + 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 2, col + 1), _CAPTURE));
                 }
             }
         }

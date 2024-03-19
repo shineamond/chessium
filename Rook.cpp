@@ -33,14 +33,14 @@ void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row - temp][col] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - temp, col), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row - temp, col), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col), _MOVE));
             temp++;
         }
     }
@@ -52,14 +52,14 @@ void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row + temp][col] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + temp, col), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row + temp, col), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col), _MOVE));
             temp++;
         }
     }
@@ -71,14 +71,14 @@ void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row][col - temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row, col - temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row, col - temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row, col - temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row, col - temp), _MOVE));
             temp++;
         }
     }
@@ -90,14 +90,14 @@ void Rook::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row][col + temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row, col + temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row, col + temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row, col + temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row, col + temp), _MOVE));
             temp++;
         }
     }

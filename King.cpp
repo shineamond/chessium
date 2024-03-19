@@ -34,12 +34,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row - 1][col - 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), _MOVE));
             }
         }
 
@@ -48,12 +48,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row - 1][col] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 1, col), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 1, col), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col), _MOVE));
             }
         }
 
@@ -63,12 +63,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row - 1][col + 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), _MOVE));
             }
         }
     }
@@ -80,12 +80,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row][col - 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row, col - 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row, col - 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row, col - 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row, col - 1), _MOVE));
             }
         }
 
@@ -95,12 +95,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row][col + 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row, col + 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row, col + 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row, col + 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row, col + 1), _MOVE));
             }
         }
     }
@@ -113,12 +113,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row + 1][col - 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), _MOVE));
             }
         }
 
@@ -127,12 +127,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row + 1][col] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 1, col), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 1, col), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col), _MOVE));
             }
         }
 
@@ -142,12 +142,12 @@ void King::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
             {
                 if (pieces_positions[row + 1][col + 1] -> GetPieceColor() != color_)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), "_TAKEABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), _CAPTURE));
                 }
             }
             else
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), _MOVE));
             }
         }
     }

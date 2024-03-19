@@ -44,6 +44,8 @@
 		<Unit filename="King.h" />
 		<Unit filename="Knight.cpp" />
 		<Unit filename="Knight.h" />
+		<Unit filename="MoveInformation.cpp" />
+		<Unit filename="MoveInformation.h" />
 		<Unit filename="Pawn.cpp" />
 		<Unit filename="Pawn.h" />
 		<Unit filename="Queen.cpp" />

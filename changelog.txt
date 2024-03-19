@@ -1,9 +1,10 @@
-	Added legal castling
-	Castling rules: both the king and the rook used for castling haven't moved previously; there aren't any pieces between the king and the rook used for castling; the king is not in a check; the squares the king has to pass shouldn't be covered
+	Added En Passant
+	Added moves log
 	
-	In class ChessBoard:
-- Modified HandleGame function for castling
-- Added AddLegalCastling function
 
-	In class ChessPiece:
-- Added a boolean variable to check if a piece has moved
+	Added enum for types of moves
+	In class ChessBoard:
+- Added AddEnPassantMove function
+- Modified HandleGame function to handle EnPassant moves
+
+	Added class MoveInformation to log moves

@@ -33,11 +33,11 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[2][col] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(2, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(2, col), _MOVE));
 
                 if (pieces_positions[3][col] == nullptr)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(3, col), "_MOVABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(3, col), _MOVE));
                 }
             }
         }
@@ -45,7 +45,7 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row + 1][col] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col), _MOVE));
             }
         }
 
@@ -54,12 +54,12 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if ((col - 1 >= 0) && (pieces_positions[row + 1][col - 1] != nullptr) && pieces_positions[row + 1][col - 1] -> GetPieceColor()== _WHITE)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col - 1), _CAPTURE));
             }
 
             if ((col + 1 < _BOARD_SIZE) && (pieces_positions[row + 1][col + 1] != nullptr) && pieces_positions[row + 1][col + 1] -> GetPieceColor() == _WHITE)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + 1, col + 1), _CAPTURE));
             }
         }
     }
@@ -71,11 +71,11 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[5][col] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(5, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(5, col), _MOVE));
 
                 if (pieces_positions[4][col] == nullptr)
                 {
-                    possible_moves_.push_back(make_pair(make_pair(4, col), "_MOVABLE"));
+                    possible_moves_.push_back(make_pair(make_pair(4, col), _MOVE));
                 }
             }
         }
@@ -83,7 +83,7 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if (pieces_positions[row - 1][col] == nullptr)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col), "_MOVABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col), _MOVE));
             }
         }
 
@@ -92,12 +92,12 @@ void Pawn::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_pos
         {
             if ((col - 1 >= 0) && (pieces_positions[row - 1][col - 1] != nullptr) && pieces_positions[row - 1][col - 1] -> GetPieceColor() == _BLACK)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col - 1), _CAPTURE));
             }
 
             if ((col + 1 < _BOARD_SIZE) && (pieces_positions[row - 1][col + 1] != nullptr) && pieces_positions[row - 1][col + 1] -> GetPieceColor() == _BLACK)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - 1, col + 1), _CAPTURE));
             }
         }
     }

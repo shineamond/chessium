@@ -33,14 +33,14 @@ void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - temp][col - temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col - temp), _MOVE));
             temp++;
         }
     }
@@ -52,14 +52,14 @@ void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row - temp][col + temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row - temp, col + temp), _MOVE));
             temp++;
         }
     }
@@ -71,14 +71,14 @@ void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + temp][col - temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col - temp), _MOVE));
             temp++;
         }
     }
@@ -90,14 +90,14 @@ void Bishop::SetPossibleMoves(const int row, const int col, ChessPiece* pieces_p
         {
             if (pieces_positions[row + temp][col + temp] -> GetPieceColor() != color_)
             {
-                possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), "_TAKEABLE"));
+                possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), _CAPTURE));
             }
 
             break;
         }
         else
         {
-            possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), "_MOVABLE"));
+            possible_moves_.push_back(make_pair(make_pair(row + temp, col + temp), _MOVE));
             temp++;
         }
     }
