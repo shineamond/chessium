@@ -26,6 +26,8 @@ class ChessBoard
         MoveInformation original_position_;
         vector <int> positions_repetition_times_;
         bool en_passant_available_;
+        int black_pieces_count_[_TOTAL];
+        int white_pieces_count_[_TOTAL];
 
     public:
         ChessBoard();
@@ -49,4 +51,8 @@ class ChessBoard
         bool IsDraw50Moves();
         bool IsDrawThreefoldRepetition();
         void SetSideToMoveFirst(const _CHESS_PIECE_COLORS side_to_move_first);
+        void CountPieces();
+        bool IsDrawInsufficientMaterials();
+        pair<int, int> FindBishopPosition(const _CHESS_PIECE_COLORS bishop_color);
+
 };

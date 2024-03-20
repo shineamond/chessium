@@ -19,6 +19,12 @@ ChessBoard::ChessBoard()
     side_to_move_ = _WHITE;
     no_capture_or_pawns_moves_ = 0;
     en_passant_available_ = false;
+
+    for (int i = 0; i < _TOTAL; i++)
+    {
+        black_pieces_count_[i] = 0;
+        white_pieces_count_[i] = 0;
+    }
 }
 
 
@@ -148,6 +154,14 @@ void ChessBoard::DrawChessBoardAndPieces() const
 
 void ChessBoard::HandleGame(bool & game_end)
 {
+    if (IsDrawInsufficientMaterials())
+    {
+        cout << "Draw\n";
+        game_end = true;
+
+        return;
+    }
+
     if (!legal_moves_set_)
     {
         for (int row = 0; row < _BOARD_SIZE; row++)
@@ -283,6 +297,15 @@ void ChessBoard::HandleGame(bool & game_end)
                             {
                                 is_capture = true;
 
+                                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK)
+                                {
+                                    black_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
+                                }
+                                else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE)
+                                {
+                                    white_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
+                                }
+
                                 // New square
                                 DestroyPiece(clicked_square_row, clicked_square_col);
                                 pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
@@ -302,12 +325,14 @@ void ChessBoard::HandleGame(bool & game_end)
                                 switch (side_to_move_)
                                 {
                                     case _BLACK:
+                                        white_pieces_count_[_PAWN] -= 1;
                                         DestroyPiece(clicked_square_row - 1, clicked_square_col);
                                         pieces_positions_[clicked_square_row - 1][clicked_square_col] = nullptr;
                                         DrawDefaultColorSquare(clicked_square_row - 1, clicked_square_col);
                                         break;
 
                                     case _WHITE:
+                                        black_pieces_count_[_PAWN] -= 1;
                                         DestroyPiece(clicked_square_row + 1, clicked_square_col);
                                         pieces_positions_[clicked_square_row + 1][clicked_square_col] = nullptr;
                                         DrawDefaultColorSquare(clicked_square_row + 1, clicked_square_col);
@@ -431,10 +456,12 @@ void ChessBoard::HandleGame(bool & game_end)
                             if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE && clicked_square_row == 0)
                             {
                                 PromotePawn(clicked_square_col, _WHITE);
+                                white_pieces_count_[_PAWN] -= 1;
                             }
                             else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK && clicked_square_row == 7)
                             {
                                 PromotePawn(clicked_square_col, _BLACK);
+                                black_pieces_count_[_PAWN] -= 1;
                             }
                         }
 
@@ -604,15 +631,19 @@ void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
                             {
                                 case 0:
                                     PutPiece(0, col, _QUEEN, _WHITE);
+                                    white_pieces_count_[_QUEEN] += 1;
                                     break;
                                 case 1:
                                     PutPiece(0, col, _KNIGHT, _WHITE);
+                                    white_pieces_count_[_KNIGHT] += 1;
                                     break;
                                 case 2:
                                     PutPiece(0, col, _ROOK, _WHITE);
+                                    white_pieces_count_[_ROOK] += 1;
                                     break;
                                 case 3:
                                     PutPiece(0, col, _BISHOP, _WHITE);
+                                    white_pieces_count_[_BISHOP] += 1;
                                     break;
                             }
 
@@ -634,15 +665,19 @@ void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
                             {
                                 case 4:
                                     PutPiece(7, col, _BISHOP, _BLACK);
+                                    black_pieces_count_[_BISHOP] += 1;
                                     break;
                                 case 5:
                                     PutPiece(7, col, _ROOK, _BLACK);
+                                    black_pieces_count_[_ROOK] += 1;
                                     break;
                                 case 6:
                                     PutPiece(7, col, _KNIGHT, _BLACK);
+                                    black_pieces_count_[_KNIGHT] += 1;
                                     break;
                                 case 7:
                                     PutPiece(7, col, _QUEEN, _BLACK);
+                                    black_pieces_count_[_QUEEN] += 1;
                                     break;
                             }
 
@@ -1255,4 +1290,101 @@ void ChessBoard::SetSideToMoveFirst(const _CHESS_PIECE_COLORS side_to_move_first
 {
     side_to_move_first_ = side_to_move_first;
     side_to_move_ = side_to_move_first_;
+}
+
+
+
+void ChessBoard::CountPieces()
+{
+    for (int i = 0; i < _TOTAL; i++)
+    {
+        black_pieces_count_[i] = 0;
+        white_pieces_count_[i] = 0;
+    }
+
+    for (int row = 0; row < _BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < _BOARD_SIZE; col++)
+        {
+            if (pieces_positions_[row][col] != nullptr)
+            {
+                if (pieces_positions_[row][col] -> GetPieceColor() == _BLACK)
+                {
+                    black_pieces_count_[pieces_positions_[row][col] -> GetPieceType()] += 1;
+                }
+                else if (pieces_positions_[row][col] -> GetPieceColor() == _WHITE)
+                {
+                    white_pieces_count_[pieces_positions_[row][col] -> GetPieceType()] += 1;
+                }
+            }
+        }
+    }
+}
+
+
+
+bool ChessBoard::IsDrawInsufficientMaterials()
+{
+    if (black_pieces_count_[_PAWN] == 0 && black_pieces_count_[_ROOK] == 0 && black_pieces_count_[_QUEEN] == 0 &&
+        white_pieces_count_[_PAWN] == 0 && white_pieces_count_[_ROOK] == 0 && white_pieces_count_[_QUEEN] == 0)
+    {
+        if (black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 0 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 0) // King vs King
+        {
+            return true;
+        }
+
+        if (black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 1 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 0) // King and Bishop vs King
+        {
+            return true;
+        }
+        else if (black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 0 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 1) // King vs King and Bishop
+        {
+            return true;;
+        }
+
+        if (black_pieces_count_[_KNIGHT] == 1 && black_pieces_count_[_BISHOP] == 0 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 0) // King and Knight vs King
+        {
+            return true;
+        }
+        else if (black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 0 && white_pieces_count_[_KNIGHT] == 1 && white_pieces_count_[_BISHOP] == 0) // King vs King and Knight
+        {
+            return true;
+        }
+
+        if (black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 1 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 1) // King and Bishop vs King and Bishop
+        {
+            pair <int, int> black_bishop_position = FindBishopPosition(_BLACK);
+            pair <int, int> white_bishop_position = FindBishopPosition(_WHITE);
+
+            if (((black_bishop_position.first + black_bishop_position.second) % 2) == ((white_bishop_position.first + white_bishop_position.second) % 2)) // Both bishop are on the same color square
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+
+pair<int, int> ChessBoard::FindBishopPosition(const _CHESS_PIECE_COLORS bishop_color)
+{
+    for (int row = 0; row < _BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < _BOARD_SIZE; col++)
+        {
+            if (pieces_positions_[row][col] != nullptr)
+            {
+                if (pieces_positions_[row][col] -> GetPieceType() == _BISHOP)
+                {
+                    if (pieces_positions_[row][col] -> GetPieceColor() == bishop_color)
+                    {
+                        return make_pair(row, col);
+                    }
+                }
+
+            }
+        }
+    }
 }

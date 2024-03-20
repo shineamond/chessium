@@ -20,7 +20,8 @@ enum _CHESS_PIECE_TYPES
     _BISHOP = 3,
     _ROOK = 4,
     _QUEEN = 5,
-    _KING = 6
+    _KING = 6,
+    _TOTAL = 7
 };
 
 enum _CHESS_PIECE_COLORS

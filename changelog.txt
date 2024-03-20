@@ -1,14 +1,11 @@
 * General:
-- Added conditions to end the game in a draw if a position is repeated for 3 times. If capturing En Passant was previously an option that is no longer available, this position is not considered a repetition.
+- Added conditions to end the game in a draw if there are insufficient materials
 
 
 * Particular:
 - In class ChessBoard
- + Added vector variables to track board repetitions
- + Added IsDrawThreefoldRepetition function
- + Added SetSideToMoveFirst function
- + Modified HandleGame function to check for Threefold Repetition draw
-
-- In class MoveInformation
- + Added a 2D array to log all pieces' positions
- + Overloaded operator '==' to check for repeated positions
+ + Added array variables to count the number of pieces of each side
+ + Added CountPieces function
+ + Added IsDrawInsufficientMaterials function
+ + Added FindBishopPosition (ONLY used to check for a draw)
+ + Modified HandleGame function to check for a draw if there are insufficient materials

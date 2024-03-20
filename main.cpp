@@ -27,10 +27,12 @@ int main(int argc, char* args[])
     bool game_end = false;
 
     ChessBoard board;
-    board.SetupDefaultBoard();
-    board.SetSideToMoveFirst(_BLACK);
-    board.DestroyPiece(6, 3);
-    board.PutPiece(3, 3, _PAWN, _WHITE);
+    //board.SetupDefaultBoard();
+    board.PutPiece(7, 4, _KING, _WHITE);
+    board.PutPiece(0, 4, _KING, _BLACK);
+    board.PutPiece(1, 0, _BISHOP, _WHITE);
+    //board.PutPiece(6, 0, _BISHOP, _BLACK);
+    board.CountPieces();
     board.DrawChessBoardAndPieces();
 
     while (!quit)
