@@ -23,6 +23,9 @@ class ChessBoard
         _CHESS_PIECE_COLORS side_to_move_first_;
         _CHESS_PIECE_COLORS side_to_move_;
         int no_capture_or_pawns_moves_;
+        MoveInformation original_position_;
+        vector <int> positions_repetition_times_;
+        bool en_passant_available_;
 
     public:
         ChessBoard();
@@ -44,4 +47,6 @@ class ChessBoard
         void AddLegalCastling();
         bool AddEnPassantMove();
         bool IsDraw50Moves();
+        bool IsDrawThreefoldRepetition();
+        void SetSideToMoveFirst(const _CHESS_PIECE_COLORS side_to_move_first);
 };

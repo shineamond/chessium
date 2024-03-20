@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreFunctions.h"
+#include "ChessPiece.h"
 
 
 
@@ -11,6 +12,8 @@ class MoveInformation
         pair <int, int> old_position_;
         pair <int, int> new_position_;
         _MOVE_TYPES move_type_;
+        pair <_CHESS_PIECE_TYPES, _CHESS_PIECE_COLORS> positions_record_[_BOARD_SIZE][_BOARD_SIZE];
+        bool en_passant_available_;
 
     public:
         MoveInformation();
@@ -20,4 +23,7 @@ class MoveInformation
         _MOVE_TYPES GetMoveType() const;
         pair <int, int> GetOldPosition() const;
         pair <int, int> GetNewPosition() const;
+        void AddPositionsRecord(ChessPiece* pieces_positions[_BOARD_SIZE][_BOARD_SIZE]);
+        bool operator == (const MoveInformation & another_log);
+        void SetEnPassantAvailable(const bool en_passant_available);
 };

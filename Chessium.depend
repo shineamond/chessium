@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1710858178 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1710899524 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
 	"ChessBoard.h"
 	"ChessPiece.h"
@@ -20,10 +20,10 @@
 1710343611 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
 	"CoreFunctions.h"
 
-1710859936 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+1710901131 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
 	"ChessBoard.h"
 
-1710859895 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
+1710899518 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -83,9 +83,10 @@
 	"ChessPiece.h"
 	"CoreFunctions.h"
 
-1710859623 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.h
+1710904000 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.h
 	"CoreFunctions.h"
+	"ChessPiece.h"
 
-1710860083 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.cpp
+1710903486 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\moveinformation.cpp
 	"MoveInformation.h"
 

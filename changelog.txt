@@ -1,9 +1,14 @@
 * General:
-- Added conditions to end the game in a draw after 50 moves without a capture or a pawn move
+- Added conditions to end the game in a draw if a position is repeated for 3 times. If capturing En Passant was previously an option that is no longer available, this position is not considered a repetition.
 
 
 * Particular:
 - In class ChessBoard
- + Added variables to track side to move first and side to move
- + Modified HandleGame function to check for a draw after 50 moves without a capture or a pawn move
- + Added IsDraw50Moves function
+ + Added vector variables to track board repetitions
+ + Added IsDrawThreefoldRepetition function
+ + Added SetSideToMoveFirst function
+ + Modified HandleGame function to check for Threefold Repetition draw
+
+- In class MoveInformation
+ + Added a 2D array to log all pieces' positions
+ + Overloaded operator '==' to check for repeated positions

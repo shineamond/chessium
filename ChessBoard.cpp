@@ -18,6 +18,7 @@ ChessBoard::ChessBoard()
     side_to_move_first_ = _WHITE;
     side_to_move_ = _WHITE;
     no_capture_or_pawns_moves_ = 0;
+    en_passant_available_ = false;
 }
 
 
@@ -122,6 +123,8 @@ void ChessBoard::SetupDefaultBoard()
     pieces_positions_[7][5] = new Bishop(_WHITE);
     pieces_positions_[7][6] = new Knight(_WHITE);
     pieces_positions_[7][7] = new Rook(_WHITE);
+
+    original_position_.AddPositionsRecord(pieces_positions_);
 }
 
 
@@ -179,15 +182,11 @@ void ChessBoard::HandleGame(bool & game_end)
         }
 
         AddLegalCastling();
-        if (AddEnPassantMove())
-        {
-            has_legal_moves_ = true;
-        }
 
         legal_moves_set_ = true;
     }
 
-    if (!has_legal_moves_)
+    if (!(has_legal_moves_ || en_passant_available_))
     {
         game_end = true;
         if (IsKingInCheck(side_to_move_))
@@ -317,8 +316,6 @@ void ChessBoard::HandleGame(bool & game_end)
                                     default:
                                         break;
                                 }
-
-                                //no_capture_or_pawns_moves_ = 0;
                             }
 
                             pieces_positions_[clicked_square_row][clicked_square_col] -> SetMoved();
@@ -427,6 +424,7 @@ void ChessBoard::HandleGame(bool & game_end)
                         legal_moves_set_ = false;
                         has_legal_moves_ = false;
                         clicked_squares_list_.clear();
+                        en_passant_available_ = false;
 
                         if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
                         {
@@ -440,6 +438,8 @@ void ChessBoard::HandleGame(bool & game_end)
                             }
                         }
 
+                        moves_log_[moves_log_.size() - 1].AddPositionsRecord(pieces_positions_);
+
                         if (side_to_move_ == _WHITE)
                         {
                             side_to_move_ = _BLACK;
@@ -447,6 +447,20 @@ void ChessBoard::HandleGame(bool & game_end)
                         else if (side_to_move_ == _BLACK)
                         {
                             side_to_move_ = _WHITE;
+                        }
+
+                        if (AddEnPassantMove())
+                        {
+                            en_passant_available_ = true;
+                        }
+                        moves_log_[moves_log_.size() - 1].SetEnPassantAvailable(en_passant_available_);
+
+                        if (IsDrawThreefoldRepetition())
+                        {
+                            cout << "Draw\n";
+                            game_end = true;
+
+                            return;
                         }
 
                         if (side_to_move_ == side_to_move_first_)
@@ -1194,4 +1208,51 @@ bool ChessBoard::IsDraw50Moves()
     }
 
     return false;
+}
+
+
+
+bool ChessBoard::IsDrawThreefoldRepetition()
+{
+    int log_size = moves_log_.size();
+    bool repetition_times_set = false;
+
+    for (int i = log_size - 2; i >= 0; i--)
+    {
+        if (moves_log_[log_size - 1] == moves_log_[i])
+        {
+            positions_repetition_times_.push_back(positions_repetition_times_[i] + 1);
+            repetition_times_set = true;
+            break;
+        }
+    }
+
+    if (!repetition_times_set)
+    {
+        if (moves_log_[log_size - 1] == original_position_)
+        {
+            positions_repetition_times_.push_back(2);
+            repetition_times_set = true;
+        }
+    }
+
+    if (!repetition_times_set)
+    {
+        positions_repetition_times_.push_back(1);
+    }
+
+    if (positions_repetition_times_[log_size - 1] == 3)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+
+
+void ChessBoard::SetSideToMoveFirst(const _CHESS_PIECE_COLORS side_to_move_first)
+{
+    side_to_move_first_ = side_to_move_first;
+    side_to_move_ = side_to_move_first_;
 }
