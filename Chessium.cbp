@@ -52,6 +52,8 @@
 		<Unit filename="Queen.h" />
 		<Unit filename="Rook.cpp" />
 		<Unit filename="Rook.h" />
+		<Unit filename="WrappedTexture.cpp" />
+		<Unit filename="WrappedTexture.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

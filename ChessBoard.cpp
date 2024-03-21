@@ -46,11 +46,11 @@ ChessBoard::~ChessBoard()
 
 void ChessBoard::DrawDefaultColorSquare(const int row, const int col) const
 {
-    SDL_Rect drawing_position{col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+    SDL_Rect drawing_position{col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
 
     if ((row + col) % 2 == 0)
     {
-        SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
+        SDL_SetRenderDrawColor(RENDERER, 234, 237, 208, 255); // LIGHT YELLOW
     }
     else
     {
@@ -64,7 +64,7 @@ void ChessBoard::DrawDefaultColorSquare(const int row, const int col) const
 
 void ChessBoard::DrawClickedSquare(const int row, const int col) const
 {
-    SDL_Rect drawing_position{col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+    SDL_Rect drawing_position{col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
     SDL_SetRenderDrawColor(RENDERER, 230, 230, 50, 200);
     SDL_RenderFillRect(RENDERER, &drawing_position);
 }
@@ -75,7 +75,7 @@ void ChessBoard::DrawPiece(const int row, const int col) const
 {
     if (pieces_positions_[row][col] != nullptr)
     {
-        SDL_Rect drawing_position {col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+        SDL_Rect drawing_position {col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
         SDL_RenderCopy(RENDERER, pieces_positions_[row][col] -> GetImage(), nullptr, &drawing_position);
     }
 }
@@ -84,7 +84,7 @@ void ChessBoard::DrawPiece(const int row, const int col) const
 
 void ChessBoard::DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const
 {
-    SDL_Rect drawing_position {col * _SQUARE_SIZE, row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+    SDL_Rect drawing_position {col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
 
     if (move_type == _MOVE || move_type == _CASTLE)
     {
@@ -231,311 +231,314 @@ void ChessBoard::HandleGame(bool & game_end)
         int mouse_position_x, mouse_position_y;
         SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
 
-        int clicked_square_row = mouse_position_y / _SQUARE_SIZE;
+        int clicked_square_row = (mouse_position_y - 60) / _SQUARE_SIZE;
         int clicked_square_col = mouse_position_x / _SQUARE_SIZE;
 
-        if (clicked_squares_list_.empty()) // Click a square
+        if ((clicked_square_row * _SQUARE_SIZE + 60 != mouse_position_y) && (clicked_square_col * _SQUARE_SIZE != mouse_position_x) && (clicked_square_row < _BOARD_SIZE) && (clicked_square_col < _BOARD_SIZE))
         {
-            if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
+            if (clicked_squares_list_.empty()) // Click a square
             {
-                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
+                if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
                 {
-                    DrawClickedSquare(clicked_square_row, clicked_square_col);
-                    DrawPiece(clicked_square_row, clicked_square_col);
+                    if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
+                    {
+                        DrawClickedSquare(clicked_square_row, clicked_square_col);
+                        DrawPiece(clicked_square_row, clicked_square_col);
 
-                    vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                        vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                        for (unsigned int i = 0; i < temp.size(); i++)
+                        {
+                            DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
+                        }
+
+                        clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
+                    }
+                }
+            }
+            else // A square has already been clicked
+            {
+                vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetLegalMoves();
+                if (clicked_square_row == clicked_squares_list_[0].first && clicked_square_col == clicked_squares_list_[0].second) // Click the clicked square
+                {
                     for (unsigned int i = 0; i < temp.size(); i++)
                     {
-                        DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
+                        DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
+                        DrawPiece(temp[i].first.first, temp[i].first.second);
                     }
 
-                    clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
-                }
-            }
-        }
-        else // A square has already been clicked
-        {
-            vector <pair<pair <int, int>, _MOVE_TYPES>> temp = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetLegalMoves();
-            if (clicked_square_row == clicked_squares_list_[0].first && clicked_square_col == clicked_squares_list_[0].second) // Click the clicked square
-            {
-                for (unsigned int i = 0; i < temp.size(); i++)
-                {
-                    DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
-                    DrawPiece(temp[i].first.first, temp[i].first.second);
-                }
+                    DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
+                    DrawPiece(clicked_square_row, clicked_square_col);
 
-                DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
-                DrawPiece(clicked_square_row, clicked_square_col);
-
-                clicked_squares_list_.clear();
-            }
-            else
-            {
-                bool is_move = false, is_capture = false, is_castle = false;
-                for (unsigned int i = 0; i < temp.size(); i++)
+                    clicked_squares_list_.clear();
+                }
+                else
                 {
-                    if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a legal move
+                    bool is_move = false, is_capture = false, is_castle = false;
+                    for (unsigned int i = 0; i < temp.size(); i++)
                     {
-                        // Old relevant squares
-                        for (int j = 0; j < (int) temp.size(); j++)
+                        if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a legal move
                         {
-                            DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
-                            DrawPiece(temp[j].first.first, temp[j].first.second);
-                        }
-
-                        if (temp[i].second == _MOVE || temp[i].second == _CAPTURE || temp[i].second == _EN_PASSANT)
-                        {
-                            if (temp[i].second == _MOVE) // Move to an empty square
+                            // Old relevant squares
+                            for (int j = 0; j < (int) temp.size(); j++)
                             {
-                                is_move = true;
-
-                                // New square
-                                pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
-                                DrawPiece(clicked_square_row, clicked_square_col);
-                            }
-                            else if (temp[i].second == _CAPTURE) // Take another piece
-                            {
-                                is_capture = true;
-
-                                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK)
-                                {
-                                    black_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
-                                }
-                                else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE)
-                                {
-                                    white_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
-                                }
-
-                                // New square
-                                DestroyPiece(clicked_square_row, clicked_square_col);
-                                pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
-                                DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
-                                DrawPiece(clicked_square_row, clicked_square_col);
-
-                                //no_capture_or_pawns_moves_ += 1;
-                            }
-                            else if (temp[i].second == _EN_PASSANT)
-                            {
-                                is_capture = true;
-
-                                // New square
-                                pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
-                                DrawPiece(clicked_square_row, clicked_square_col);
-
-                                switch (side_to_move_)
-                                {
-                                    case _BLACK:
-                                        white_pieces_count_[_PAWN] -= 1;
-                                        DestroyPiece(clicked_square_row - 1, clicked_square_col);
-                                        pieces_positions_[clicked_square_row - 1][clicked_square_col] = nullptr;
-                                        DrawDefaultColorSquare(clicked_square_row - 1, clicked_square_col);
-                                        break;
-
-                                    case _WHITE:
-                                        black_pieces_count_[_PAWN] -= 1;
-                                        DestroyPiece(clicked_square_row + 1, clicked_square_col);
-                                        pieces_positions_[clicked_square_row + 1][clicked_square_col] = nullptr;
-                                        DrawDefaultColorSquare(clicked_square_row + 1, clicked_square_col);
-                                        break;
-
-                                    default:
-                                        break;
-                                }
+                                DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
+                                DrawPiece(temp[j].first.first, temp[j].first.second);
                             }
 
-                            pieces_positions_[clicked_square_row][clicked_square_col] -> SetMoved();
-                            moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
-                                                                     clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), temp[i].second));
-
-                            // Old squares
-                            pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
-                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                        }
-                        else if (temp[i].second == _CASTLE)
-                        {
-                            is_castle = true;
-
-                            if (clicked_square_row == 0) // Black castles
+                            if (temp[i].second == _MOVE || temp[i].second == _CAPTURE || temp[i].second == _EN_PASSANT)
                             {
-                                if (clicked_square_col == 2)
+                                if (temp[i].second == _MOVE) // Move to an empty square
                                 {
-                                    pieces_positions_[0][2] = pieces_positions_[0][4];
-                                    pieces_positions_[0][4] = nullptr;
-                                    pieces_positions_[0][3] = pieces_positions_[0][0];
-                                    pieces_positions_[0][0] = nullptr;
+                                    is_move = true;
 
-                                    pieces_positions_[0][2] -> SetMoved();
-                                    pieces_positions_[0][3] -> SetMoved();
+                                    // New square
+                                    pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                                    DrawPiece(clicked_square_row, clicked_square_col);
+                                }
+                                else if (temp[i].second == _CAPTURE) // Take another piece
+                                {
+                                    is_capture = true;
 
-                                    for (int col = 0; col <= 4; col++)
+                                    if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK)
                                     {
-                                        DrawDefaultColorSquare(0, col);
-                                        DrawPiece(0, col);
+                                        black_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
+                                    }
+                                    else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE)
+                                    {
+                                        white_pieces_count_[pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType()] -= 1;
+                                    }
+
+                                    // New square
+                                    DestroyPiece(clicked_square_row, clicked_square_col);
+                                    pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                                    DrawDefaultColorSquare(clicked_square_row, clicked_square_col);
+                                    DrawPiece(clicked_square_row, clicked_square_col);
+
+                                    //no_capture_or_pawns_moves_ += 1;
+                                }
+                                else if (temp[i].second == _EN_PASSANT)
+                                {
+                                    is_capture = true;
+
+                                    // New square
+                                    pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
+                                    DrawPiece(clicked_square_row, clicked_square_col);
+
+                                    switch (side_to_move_)
+                                    {
+                                        case _BLACK:
+                                            white_pieces_count_[_PAWN] -= 1;
+                                            DestroyPiece(clicked_square_row - 1, clicked_square_col);
+                                            pieces_positions_[clicked_square_row - 1][clicked_square_col] = nullptr;
+                                            DrawDefaultColorSquare(clicked_square_row - 1, clicked_square_col);
+                                            break;
+
+                                        case _WHITE:
+                                            black_pieces_count_[_PAWN] -= 1;
+                                            DestroyPiece(clicked_square_row + 1, clicked_square_col);
+                                            pieces_positions_[clicked_square_row + 1][clicked_square_col] = nullptr;
+                                            DrawDefaultColorSquare(clicked_square_row + 1, clicked_square_col);
+                                            break;
+
+                                        default:
+                                            break;
                                     }
                                 }
 
-                                else if (clicked_square_col == 6)
+                                pieces_positions_[clicked_square_row][clicked_square_col] -> SetMoved();
+                                moves_log_.push_back(MoveInformation(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceType(),
+                                                                         clicked_squares_list_[0], make_pair(clicked_square_row, clicked_square_col), temp[i].second));
+
+                                // Old squares
+                                pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] = nullptr;
+                                DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                            }
+                            else if (temp[i].second == _CASTLE)
+                            {
+                                is_castle = true;
+
+                                if (clicked_square_row == 0) // Black castles
                                 {
-                                    pieces_positions_[0][6] = pieces_positions_[0][4];
-                                    pieces_positions_[0][4] = nullptr;
-                                    pieces_positions_[0][5] = pieces_positions_[0][7];
-                                    pieces_positions_[0][7] = nullptr;
-
-                                    pieces_positions_[0][6] -> SetMoved();
-                                    pieces_positions_[0][5] -> SetMoved();
-
-                                    for (int col = 4; col < _BOARD_SIZE; col++)
+                                    if (clicked_square_col == 2)
                                     {
-                                        DrawDefaultColorSquare(0, col);
-                                        DrawPiece(0, col);
+                                        pieces_positions_[0][2] = pieces_positions_[0][4];
+                                        pieces_positions_[0][4] = nullptr;
+                                        pieces_positions_[0][3] = pieces_positions_[0][0];
+                                        pieces_positions_[0][0] = nullptr;
+
+                                        pieces_positions_[0][2] -> SetMoved();
+                                        pieces_positions_[0][3] -> SetMoved();
+
+                                        for (int col = 0; col <= 4; col++)
+                                        {
+                                            DrawDefaultColorSquare(0, col);
+                                            DrawPiece(0, col);
+                                        }
+                                    }
+
+                                    else if (clicked_square_col == 6)
+                                    {
+                                        pieces_positions_[0][6] = pieces_positions_[0][4];
+                                        pieces_positions_[0][4] = nullptr;
+                                        pieces_positions_[0][5] = pieces_positions_[0][7];
+                                        pieces_positions_[0][7] = nullptr;
+
+                                        pieces_positions_[0][6] -> SetMoved();
+                                        pieces_positions_[0][5] -> SetMoved();
+
+                                        for (int col = 4; col < _BOARD_SIZE; col++)
+                                        {
+                                            DrawDefaultColorSquare(0, col);
+                                            DrawPiece(0, col);
+                                        }
+                                    }
+                                }
+
+                                else if (clicked_square_row == 7) // White castles
+                                {
+                                    if (clicked_square_col == 2)
+                                    {
+                                        pieces_positions_[7][2] = pieces_positions_[7][4];
+                                        pieces_positions_[7][4] = nullptr;
+                                        pieces_positions_[7][3] = pieces_positions_[7][0];
+                                        pieces_positions_[7][0] = nullptr;
+
+                                        pieces_positions_[7][2] -> SetMoved();
+                                        pieces_positions_[7][3] -> SetMoved();
+
+                                        for (int col = 0; col <= 4; col++)
+                                        {
+                                            DrawDefaultColorSquare(7, col);
+                                            DrawPiece(7, col);
+                                        }
+                                    }
+
+                                    else if (clicked_square_col == 6)
+                                    {
+                                        pieces_positions_[7][6] = pieces_positions_[7][4];
+                                        pieces_positions_[7][4] = nullptr;
+                                        pieces_positions_[7][5] = pieces_positions_[7][7];
+                                        pieces_positions_[7][7] = nullptr;
+
+                                        pieces_positions_[7][6] -> SetMoved();
+                                        pieces_positions_[7][5] -> SetMoved();
+
+                                        for (int col = 4; col < _BOARD_SIZE; col++)
+                                        {
+                                            DrawDefaultColorSquare(7, col);
+                                            DrawPiece(7, col);
+                                        }
+                                    }
+                                }
+
+                                moves_log_.push_back(MoveInformation(_CASTLE));
+                            }
+
+                            for (int row = 0; row < _BOARD_SIZE; row++)
+                            {
+                                for (int col = 0; col < _BOARD_SIZE; col++)
+                                {
+                                    if (pieces_positions_[row][col] != nullptr)
+                                    {
+                                        if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move_)
+                                        {
+                                            pieces_positions_[row][col] -> UnsetLegalMoves();
+                                        }
                                     }
                                 }
                             }
 
-                            else if (clicked_square_row == 7) // White castles
+                            legal_moves_set_ = false;
+                            has_legal_moves_ = false;
+                            clicked_squares_list_.clear();
+                            en_passant_available_ = false;
+
+                            if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
                             {
-                                if (clicked_square_col == 2)
+                                if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE && clicked_square_row == 0)
                                 {
-                                    pieces_positions_[7][2] = pieces_positions_[7][4];
-                                    pieces_positions_[7][4] = nullptr;
-                                    pieces_positions_[7][3] = pieces_positions_[7][0];
-                                    pieces_positions_[7][0] = nullptr;
-
-                                    pieces_positions_[7][2] -> SetMoved();
-                                    pieces_positions_[7][3] -> SetMoved();
-
-                                    for (int col = 0; col <= 4; col++)
-                                    {
-                                        DrawDefaultColorSquare(7, col);
-                                        DrawPiece(7, col);
-                                    }
+                                    PromotePawn(clicked_square_col, _WHITE);
+                                    white_pieces_count_[_PAWN] -= 1;
                                 }
-
-                                else if (clicked_square_col == 6)
+                                else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK && clicked_square_row == 7)
                                 {
-                                    pieces_positions_[7][6] = pieces_positions_[7][4];
-                                    pieces_positions_[7][4] = nullptr;
-                                    pieces_positions_[7][5] = pieces_positions_[7][7];
-                                    pieces_positions_[7][7] = nullptr;
-
-                                    pieces_positions_[7][6] -> SetMoved();
-                                    pieces_positions_[7][5] -> SetMoved();
-
-                                    for (int col = 4; col < _BOARD_SIZE; col++)
-                                    {
-                                        DrawDefaultColorSquare(7, col);
-                                        DrawPiece(7, col);
-                                    }
+                                    PromotePawn(clicked_square_col, _BLACK);
+                                    black_pieces_count_[_PAWN] -= 1;
                                 }
                             }
 
-                            moves_log_.push_back(MoveInformation(_CASTLE));
-                        }
+                            moves_log_[moves_log_.size() - 1].AddPositionsRecord(pieces_positions_);
 
-                        for (int row = 0; row < _BOARD_SIZE; row++)
-                        {
-                            for (int col = 0; col < _BOARD_SIZE; col++)
+                            if (side_to_move_ == _WHITE)
                             {
-                                if (pieces_positions_[row][col] != nullptr)
-                                {
-                                    if (pieces_positions_[row][col] -> GetPieceColor() == side_to_move_)
-                                    {
-                                        pieces_positions_[row][col] -> UnsetLegalMoves();
-                                    }
-                                }
+                                side_to_move_ = _BLACK;
                             }
-                        }
-
-                        legal_moves_set_ = false;
-                        has_legal_moves_ = false;
-                        clicked_squares_list_.clear();
-                        en_passant_available_ = false;
-
-                        if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceType() == _PAWN)
-                        {
-                            if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE && clicked_square_row == 0)
+                            else if (side_to_move_ == _BLACK)
                             {
-                                PromotePawn(clicked_square_col, _WHITE);
-                                white_pieces_count_[_PAWN] -= 1;
+                                side_to_move_ = _WHITE;
                             }
-                            else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK && clicked_square_row == 7)
+
+                            if (AddEnPassantMove())
                             {
-                                PromotePawn(clicked_square_col, _BLACK);
-                                black_pieces_count_[_PAWN] -= 1;
+                                en_passant_available_ = true;
                             }
-                        }
+                            moves_log_[moves_log_.size() - 1].SetEnPassantAvailable(en_passant_available_);
 
-                        moves_log_[moves_log_.size() - 1].AddPositionsRecord(pieces_positions_);
-
-                        if (side_to_move_ == _WHITE)
-                        {
-                            side_to_move_ = _BLACK;
-                        }
-                        else if (side_to_move_ == _BLACK)
-                        {
-                            side_to_move_ = _WHITE;
-                        }
-
-                        if (AddEnPassantMove())
-                        {
-                            en_passant_available_ = true;
-                        }
-                        moves_log_[moves_log_.size() - 1].SetEnPassantAvailable(en_passant_available_);
-
-                        if (IsDrawThreefoldRepetition())
-                        {
-                            cout << "Draw\n";
-                            game_end = true;
-
-                            return;
-                        }
-
-                        if (side_to_move_ == side_to_move_first_)
-                        {
-                            if (IsDraw50Moves())
+                            if (IsDrawThreefoldRepetition())
                             {
                                 cout << "Draw\n";
                                 game_end = true;
 
                                 return;
                             }
+
+                            if (side_to_move_ == side_to_move_first_)
+                            {
+                                if (IsDraw50Moves())
+                                {
+                                    cout << "Draw\n";
+                                    game_end = true;
+
+                                    return;
+                                }
+                            }
+
+                            break;
                         }
-
-                        break;
                     }
-                }
 
-                if (!(is_move || is_capture || is_castle))
-                {
-                    if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
+                    if (!(is_move || is_capture || is_castle))
                     {
-                        if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
+                        if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
                         {
-                            // Old relevant square
-                            for (int i = 0; i < (int) temp.size(); i++)
+                            if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == side_to_move_)
                             {
-                                DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
-                                DrawPiece(temp[i].first.first, temp[i].first.second);
+                                // Old relevant square
+                                for (int i = 0; i < (int) temp.size(); i++)
+                                {
+                                    DrawDefaultColorSquare(temp[i].first.first, temp[i].first.second);
+                                    DrawPiece(temp[i].first.first, temp[i].first.second);
+                                }
+
+                                // Old clicked square
+                                DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                                DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
+                                clicked_squares_list_.clear();
+
+                                // New clicked square
+                                DrawClickedSquare(clicked_square_row, clicked_square_col);
+                                DrawPiece(clicked_square_row, clicked_square_col);
+
+                                // New relevant squares
+                                temp.clear();
+                                temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
+                                for (unsigned int i = 0; i < temp.size(); i++)
+                                {
+                                    DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
+                                }
+
+                                clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
                             }
-
-                            // Old clicked square
-                            DrawDefaultColorSquare(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                            DrawPiece(clicked_squares_list_[0].first, clicked_squares_list_[0].second);
-                            clicked_squares_list_.clear();
-
-                            // New clicked square
-                            DrawClickedSquare(clicked_square_row, clicked_square_col);
-                            DrawPiece(clicked_square_row, clicked_square_col);
-
-                            // New relevant squares
-                            temp.clear();
-                            temp = pieces_positions_[clicked_square_row][clicked_square_col] -> GetLegalMoves();
-                            for (unsigned int i = 0; i < temp.size(); i++)
-                            {
-                                DrawRelevantSquares(temp[i].first.first, temp[i].first.second, temp[i].second);
-                            }
-
-                            clicked_squares_list_.push_back(make_pair(clicked_square_row, clicked_square_col));
                         }
                     }
                 }
@@ -595,13 +598,13 @@ void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
 
     if (color == _WHITE)
     {
-        drawing_position.y = 0;
+        drawing_position.y = 60;
 
         SDL_RenderCopy(RENDERER, LoadTexture("media/white_promotion.png"), nullptr, &drawing_position);
     }
     else if (color == _BLACK)
     {
-        drawing_position.y = _SQUARE_SIZE * 4;
+        drawing_position.y = 60 + _SQUARE_SIZE * 4;
 
         SDL_RenderCopy(RENDERER, LoadTexture("media/black_promotion.png"), nullptr, &drawing_position);
     }
@@ -617,10 +620,10 @@ void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
                 int mouse_position_x, mouse_position_y;
                 SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
 
-                int clicked_square_row = mouse_position_y / _SQUARE_SIZE;
+                int clicked_square_row = (mouse_position_y - 60) / _SQUARE_SIZE;
                 int clicked_square_col = mouse_position_x / _SQUARE_SIZE;
 
-                if (clicked_square_row * _SQUARE_SIZE != mouse_position_y && clicked_square_col * _SQUARE_SIZE != mouse_position_x)
+                if ((clicked_square_row * _SQUARE_SIZE + 60 != mouse_position_y) && (clicked_square_col * _SQUARE_SIZE != mouse_position_x) && (clicked_square_row < _BOARD_SIZE) && (clicked_square_col < _BOARD_SIZE))
                 {
                     if (color == _WHITE)
                     {

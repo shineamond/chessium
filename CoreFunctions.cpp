@@ -13,7 +13,14 @@ bool Initialize()
 
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
-        cout << "SDL_image couldn't initialize. SDL_image error: " << IMG_GetError() << endl;
+        cout << "SDL_image couldn't initialize. IMG_Error: " << IMG_GetError() << endl;
+
+        return false;
+    }
+
+    if (TTF_Init() == -1)
+    {
+        cout << "SDL_ttf couldn't initialize. TTF_Error: " << TTF_GetError() << endl;
 
         return false;
     }
@@ -30,6 +37,14 @@ bool Initialize()
     if (RENDERER == nullptr)
     {
         cout << "Couldn't create renderer. SDL_Error: " << SDL_GetError() << endl;
+
+        return false;
+    }
+
+    FONT = TTF_OpenFont(_FONT_PATH.c_str(), 24);
+    if (FONT == nullptr)
+    {
+        cout << "Couldn't load " << _FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
 
         return false;
     }
@@ -69,11 +84,14 @@ SDL_Texture* LoadTexture(const string image_path)
 
 void Quit()
 {
+    TTF_CloseFont(FONT);
+    FONT = nullptr;
     SDL_DestroyRenderer(RENDERER);
     RENDERER = nullptr;
     SDL_DestroyWindow(WINDOW);
     WINDOW = nullptr;
 
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }

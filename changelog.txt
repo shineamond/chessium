@@ -1,11 +1,7 @@
 * General:
-- Added conditions to end the game in a draw if there are insufficient materials
+- Added SDL_TTF
+- Added text rendering
 
 
 * Particular:
-- In class ChessBoard
- + Added array variables to count the number of pieces of each side
- + Added CountPieces function
- + Added IsDrawInsufficientMaterials function
- + Added FindBishopPosition (ONLY used to check for a draw)
- + Modified HandleGame function to check for a draw if there are insufficient materials
+- Added class WrappedTexture

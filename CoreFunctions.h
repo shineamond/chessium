@@ -4,13 +4,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
+#include <SDL_ttf.h>
 using namespace std;
 
 const string _WINDOW_TITLE = "CHESSIUM";
 const int _SQUARE_SIZE = 80;
 const int _BOARD_SIZE = 8;
-const int _SCREEN_WIDTH = _SQUARE_SIZE * _BOARD_SIZE;
-const int _SCREEN_HEIGHT = _SQUARE_SIZE * _BOARD_SIZE;
+const int _SCREEN_WIDTH = 640;
+const int _SCREEN_HEIGHT = 760;
+const string _FONT_PATH = "open-sans/OpenSans-Bold.ttf";
 
 enum _CHESS_PIECE_TYPES
 {
@@ -57,7 +59,9 @@ enum _MOVE_TYPES
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
 extern SDL_Event EVENT;
+extern TTF_Font* FONT;
 
 bool Initialize();
 SDL_Texture* LoadTexture(const string image_path);
 void Quit();
+//SDL_Texture* CreateTextureFromText(const string text, const SDL_Color text_color);
