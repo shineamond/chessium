@@ -54,5 +54,6 @@ class ChessBoard
         void CountPieces();
         bool IsDrawInsufficientMaterials();
         pair<int, int> FindBishopPosition(const _CHESS_PIECE_COLORS bishop_color);
+        _CHESS_PIECE_COLORS GetSideToMove() const;
 
 };

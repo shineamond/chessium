@@ -1391,3 +1391,10 @@ pair<int, int> ChessBoard::FindBishopPosition(const _CHESS_PIECE_COLORS bishop_c
         }
     }
 }
+
+
+
+_CHESS_PIECE_COLORS ChessBoard::GetSideToMove() const
+{
+    return side_to_move_;
+}

@@ -36,6 +36,8 @@
 		<Unit filename="Bishop.h" />
 		<Unit filename="ChessBoard.cpp" />
 		<Unit filename="ChessBoard.h" />
+		<Unit filename="ChessClock.cpp" />
+		<Unit filename="ChessClock.h" />
 		<Unit filename="ChessPiece.cpp" />
 		<Unit filename="ChessPiece.h" />
 		<Unit filename="CoreFunctions.cpp" />

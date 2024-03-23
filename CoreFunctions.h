@@ -5,7 +5,11 @@
 #include <SDL_image.h>
 #include <vector>
 #include <SDL_ttf.h>
+#include <chrono>
+#include <thread>
+#include <mutex>
 using namespace std;
+using namespace std::chrono;
 
 const string _WINDOW_TITLE = "CHESSIUM";
 const int _SQUARE_SIZE = 80;
@@ -60,6 +64,8 @@ extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
 extern SDL_Event EVENT;
 extern TTF_Font* FONT;
+
+extern mutex MUTEX;
 
 bool Initialize();
 SDL_Texture* LoadTexture(const string image_path);

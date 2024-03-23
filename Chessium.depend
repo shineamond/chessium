@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1711013803 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1711167122 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
 	"ChessBoard.h"
 	"ChessPiece.h"
@@ -11,21 +11,25 @@
 	"King.h"
 	"MoveInformation.h"
 	"WrappedTexture.h"
+	"ChessClock.h"
 
-1711014076 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
+1711157103 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
 	<vector>
 	<SDL_ttf.h>
+	<chrono>
+	<thread>
+	<mutex>
 
 1710977604 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
 	"CoreFunctions.h"
 
-1711014024 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+1711157572 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
 	"ChessBoard.h"
 
-1710923211 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
+1711157501 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -95,6 +99,13 @@
 1710984146 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\wrappedtexture.h
 	"CoreFunctions.h"
 
-1710984280 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\wrappedtexture.cpp
+1711014098 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\wrappedtexture.cpp
+	"WrappedTexture.h"
+
+1711168142 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessclock.cpp
+	"ChessClock.h"
+
+1711160199 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessclock.h
+	"CoreFunctions.h"
 	"WrappedTexture.h"
 
