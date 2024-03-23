@@ -95,3 +95,19 @@ void Quit()
     IMG_Quit();
     SDL_Quit();
 }
+
+
+
+void WaitUntilKeyPressed()
+{
+    while(true)
+    {
+        while(SDL_PollEvent(&EVENT))
+        {
+            if (EVENT.type == SDL_KEYDOWN || EVENT.type == SDL_QUIT)
+            {
+                return;
+            }
+        }
+    }
+}

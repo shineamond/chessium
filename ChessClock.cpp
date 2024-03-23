@@ -8,7 +8,7 @@ ChessClock::ChessClock(const int input_time_limit)
     white_time_left_ = input_time_limit;
     black_time_left_ = input_time_limit;
     is_running_ = false;
-    bool side_to_move_ = _COLORLESS;
+    bool side_to_move_ = _WHITE;
 }
 
 

@@ -46,6 +46,13 @@ enum _MOVE_TYPES
     _EN_PASSANT
 };
 
+enum _MESSAGES_FROM_CHESSBOARD
+{
+    _NO_MESSAGE,
+    _FINISHED_A_MOVE,
+    _GAME_OVER
+};
+
 //enum _BOARD_SQUARE_COLORS
 //{
 //    _NONE = 0,
@@ -70,4 +77,4 @@ extern mutex MUTEX;
 bool Initialize();
 SDL_Texture* LoadTexture(const string image_path);
 void Quit();
-//SDL_Texture* CreateTextureFromText(const string text, const SDL_Color text_color);
+void WaitUntilKeyPressed();

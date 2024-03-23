@@ -1,7 +1,9 @@
 * General:
-- Added clock
+- Wrapped into a classic chess game
+- Fixed the stucking clock
 
 
 * Particular:
-- Added class ChessClock
-- Utilize another thread to keep track of timer
+- Added class ClassicChessGame
+- Added WaitUntilKeyPressed function
+- Modified class Chessboard
