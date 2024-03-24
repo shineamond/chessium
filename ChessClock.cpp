@@ -150,3 +150,19 @@ void ChessClock::RenderTime()
     white_clock_texture.SetupTextureFromText(white_time_left, SDL_Color{0, 0, 0});
     white_clock_texture.Render(560, 714);
 }
+
+
+
+int ChessClock::GetTimeLeft(const _CHESS_PIECE_COLORS side) const
+{
+    if (side == _WHITE)
+    {
+        return white_time_left_;
+    }
+    else if (side == _BLACK)
+    {
+        return black_time_left_;
+    }
+
+    return 0;
+}

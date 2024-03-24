@@ -22,4 +22,5 @@ class ChessClock
         void SetSideToMove(const _CHESS_PIECE_COLORS side_to_move);
         pair<string, string> ConvertTime();
         void RenderTime();
+        int GetTimeLeft(const _CHESS_PIECE_COLORS side) const;
 };

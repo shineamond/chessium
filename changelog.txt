@@ -1,9 +1,7 @@
 * General:
-- Wrapped into a classic chess game
-- Fixed the stucking clock
+- Timer now also plays a role in deciding the result of the game: If one side runs out of time, if the other side has insufficient materials to give checkmate, the game will be a draw, else the other side wins
 
 
 * Particular:
-- Added class ClassicChessGame
-- Added WaitUntilKeyPressed function
-- Modified class Chessboard
+- In class ChessClock: Added GetTimeLeft function
+- In class ClassicChessGame: Modified Run function

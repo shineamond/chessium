@@ -39,7 +39,7 @@ void ClassicChessGame::Setup()
     board_.CountPieces();
     board_.DrawChessBoardAndPieces();
 
-    clock_ = ChessClock(30000);
+    clock_ = ChessClock(10000);
 }
 
 
@@ -63,6 +63,35 @@ void ClassicChessGame::Run()
         clock_.RenderTime();
         SDL_RenderPresent(RENDERER);
 
+        if(clock_.GetTimeLeft(_BLACK) == 0)
+        {
+            if (board_.IsOnlyKingLeft(_WHITE))
+            {
+                cout << "Draw\n";
+            }
+            else
+            {
+                cout << "White wins\n";
+            }
+
+            clock_.StopClock();
+            game_over_ = true;
+        }
+        else if (clock_.GetTimeLeft(_WHITE) == 0)
+        {
+            if (board_.IsOnlyKingLeft(_BLACK))
+            {
+                cout << "Draw\n";
+            }
+            else
+            {
+                cout << "Black wins\n";
+            }
+
+            clock_.StopClock();
+            game_over_ = true;
+        }
+
         while (SDL_PollEvent(&EVENT) != 0)
         {
             if (!game_over_)
@@ -81,6 +110,7 @@ void ClassicChessGame::Run()
                 }
                 else if (message == _GAME_OVER)
                 {
+                    clock_.StopClock();
                     game_over_ = true;
                 }
 
@@ -90,6 +120,7 @@ void ClassicChessGame::Run()
             if (EVENT.type == SDL_QUIT)
             {
                 game_over_ = true;
+                clock_.StopClock();
                 return;
             }
         }

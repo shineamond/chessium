@@ -40,6 +40,8 @@
 		<Unit filename="ChessClock.h" />
 		<Unit filename="ChessPiece.cpp" />
 		<Unit filename="ChessPiece.h" />
+		<Unit filename="ClassicChessGame.cpp" />
+		<Unit filename="ClassicChessGame.h" />
 		<Unit filename="CoreFunctions.cpp" />
 		<Unit filename="CoreFunctions.h" />
 		<Unit filename="King.cpp" />

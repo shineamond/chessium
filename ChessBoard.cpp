@@ -1412,3 +1412,25 @@ pair<int, int> ChessBoard::FindBishopPosition(const _CHESS_PIECE_COLORS bishop_c
 //{
 //    return side_to_move_;
 //}
+
+
+
+bool ChessBoard::IsOnlyKingLeft(const _CHESS_PIECE_COLORS side) const
+{
+    if (side == _WHITE)
+    {
+        if (white_pieces_count_[_PAWN] == 0 && white_pieces_count_[_KNIGHT] == 0 && white_pieces_count_[_BISHOP] == 0 && white_pieces_count_[_ROOK] == 0 && white_pieces_count_[_QUEEN] == 0)
+        {
+            return true;
+        }
+    }
+    else if (side == _BLACK)
+    {
+        if (black_pieces_count_[_PAWN] == 0 && black_pieces_count_[_KNIGHT] == 0 && black_pieces_count_[_BISHOP] == 0 && black_pieces_count_[_ROOK] == 0 && black_pieces_count_[_QUEEN] == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
