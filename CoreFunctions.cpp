@@ -41,10 +41,42 @@ bool Initialize()
         return false;
     }
 
-    FONT = TTF_OpenFont(_FONT_PATH.c_str(), 24);
-    if (FONT == nullptr)
+    REGULAR_FONT_18 = TTF_OpenFont(_REGULAR_FONT_PATH.c_str(), 18);
+    if (REGULAR_FONT_18 == nullptr)
     {
-        cout << "Couldn't load " << _FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+        cout << "Couldn't load " << _REGULAR_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+
+        return false;
+    }
+
+    REGULAR_FONT_24 = TTF_OpenFont(_REGULAR_FONT_PATH.c_str(), 24);
+    if (REGULAR_FONT_24 == nullptr)
+    {
+        cout << "Couldn't load " << _REGULAR_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+
+        return false;
+    }
+
+    SEMIBOLD_FONT_12 = TTF_OpenFont(_SEMIBOLD_FONT_PATH.c_str(), 12);
+    if (SEMIBOLD_FONT_12 == nullptr)
+    {
+        cout << "Couldn't load " << _SEMIBOLD_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+
+        return false;
+    }
+
+    SEMIBOLD_FONT_18 = TTF_OpenFont(_SEMIBOLD_FONT_PATH.c_str(), 18);
+    if (SEMIBOLD_FONT_18 == nullptr)
+    {
+        cout << "Couldn't load " << _SEMIBOLD_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+
+        return false;
+    }
+
+    SEMIBOLD_FONT_24 = TTF_OpenFont(_SEMIBOLD_FONT_PATH.c_str(), 24);
+    if (REGULAR_FONT_24 == nullptr)
+    {
+        cout << "Couldn't load " << _SEMIBOLD_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
 
         return false;
     }
@@ -84,8 +116,17 @@ SDL_Texture* LoadTexture(const string image_path)
 
 void Quit()
 {
-    TTF_CloseFont(FONT);
-    FONT = nullptr;
+    TTF_CloseFont(REGULAR_FONT_18);
+    REGULAR_FONT_18 = nullptr;
+    TTF_CloseFont(REGULAR_FONT_24);
+    REGULAR_FONT_24 = nullptr;
+    TTF_CloseFont(SEMIBOLD_FONT_12);
+    SEMIBOLD_FONT_12 = nullptr;
+    TTF_CloseFont(SEMIBOLD_FONT_18);
+    SEMIBOLD_FONT_18 = nullptr;
+    TTF_CloseFont(SEMIBOLD_FONT_24);
+    SEMIBOLD_FONT_24 = nullptr;
+
     SDL_DestroyRenderer(RENDERER);
     RENDERER = nullptr;
     SDL_DestroyWindow(WINDOW);

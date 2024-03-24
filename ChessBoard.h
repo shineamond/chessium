@@ -26,7 +26,6 @@ class ChessBoard
         bool en_passant_available_;
         int black_pieces_count_[_TOTAL];
         int white_pieces_count_[_TOTAL];
-        bool finished_a_move_;
 
     public:
         ChessBoard();

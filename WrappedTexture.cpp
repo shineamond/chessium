@@ -21,11 +21,38 @@ WrappedTexture::~WrappedTexture()
 
 
 
-void WrappedTexture::SetupTextureFromText(const string text, const SDL_Color text_color)
+void WrappedTexture::SetupTextureFromText(const int font_size, const bool is_bold, const string text, const SDL_Color text_color)
 {
     texture_ = nullptr;
+    SDL_Surface* text_surface = nullptr;
 
-    SDL_Surface* text_surface = TTF_RenderText_Solid(FONT, text.c_str(), text_color);
+    if (!is_bold)
+    {
+        if (font_size == 18)
+        {
+            text_surface = TTF_RenderText_Solid(REGULAR_FONT_18, text.c_str(), text_color);
+        }
+        else if (font_size == 24)
+        {
+            text_surface = TTF_RenderText_Solid(REGULAR_FONT_24, text.c_str(), text_color);
+        }
+    }
+    else
+    {
+        if (font_size == 12)
+        {
+            text_surface = TTF_RenderText_Solid(SEMIBOLD_FONT_12, text.c_str(), text_color);
+        }
+        else if (font_size == 18)
+        {
+            text_surface = TTF_RenderText_Solid(SEMIBOLD_FONT_18, text.c_str(), text_color);
+        }
+        else if (font_size == 24)
+        {
+            text_surface = TTF_RenderText_Solid(SEMIBOLD_FONT_24, text.c_str(), text_color);
+        }
+    }
+
     if (text_surface == nullptr)
     {
         cout << "Couldn't create text surface. TTF_Error: " << TTF_GetError() << endl;

@@ -15,7 +15,11 @@
 SDL_Window* WINDOW = nullptr;
 SDL_Renderer* RENDERER = nullptr;
 SDL_Event EVENT;
-TTF_Font* FONT;
+TTF_Font* REGULAR_FONT_18;
+TTF_Font* REGULAR_FONT_24;
+TTF_Font* SEMIBOLD_FONT_12;
+TTF_Font* SEMIBOLD_FONT_18;
+TTF_Font* SEMIBOLD_FONT_24;
 
 mutex MUTEX;
 

@@ -14,7 +14,7 @@ class WrappedTexture
     public:
         WrappedTexture();
         ~WrappedTexture();
-        void SetupTextureFromText(const string text, const SDL_Color text_color);
+        void SetupTextureFromText(const int font_size, const bool is_bold, const string text, const SDL_Color text_color);
         SDL_Texture* GetTexture() const;
         int GetWidth() const;
         int GetHeight() const;

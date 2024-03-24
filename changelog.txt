@@ -1,7 +1,7 @@
 * General:
-- Timer now also plays a role in deciding the result of the game: If one side runs out of time, if the other side has insufficient materials to give checkmate, the game will be a draw, else the other side wins
-
+- Render choosing time area
 
 * Particular:
-- In class ChessClock: Added GetTimeLeft function
-- In class ClassicChessGame: Modified Run function
+- In CoreFunctions: open more font types
+- In class ClassicChessGame: modified Setup function to render choosing time area
+- In class Wrapped Texture: modified SetupTextureFromText function to setup text with different fonts and font sizes

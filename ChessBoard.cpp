@@ -137,7 +137,7 @@ void ChessBoard::SetupDefaultBoard()
 
 void ChessBoard::DrawChessBoardAndPieces() const
 {
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255); // WHITE
+    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
     SDL_RenderClear(RENDERER);
 
     for (int row = 0; row < _BOARD_SIZE; row++)

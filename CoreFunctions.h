@@ -14,9 +14,11 @@ using namespace std::chrono;
 const string _WINDOW_TITLE = "CHESSIUM";
 const int _SQUARE_SIZE = 80;
 const int _BOARD_SIZE = 8;
-const int _SCREEN_WIDTH = 640;
+const int _SCREEN_WIDTH = 1100;
 const int _SCREEN_HEIGHT = 760;
-const string _FONT_PATH = "open-sans/OpenSans-Bold.ttf";
+const string _REGULAR_FONT_PATH = "open-sans/OpenSans-Regular.ttf";
+const string _SEMIBOLD_FONT_PATH = "open-sans/OpenSans-Semibold.ttf";
+const SDL_Color _WHITE_COLOR = SDL_Color{255, 255, 255};
 
 enum _CHESS_PIECE_TYPES
 {
@@ -70,7 +72,11 @@ enum _MESSAGES_FROM_CHESSBOARD
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
 extern SDL_Event EVENT;
-extern TTF_Font* FONT;
+extern TTF_Font* REGULAR_FONT_18;
+extern TTF_Font* REGULAR_FONT_24;
+extern TTF_Font* SEMIBOLD_FONT_12;
+extern TTF_Font* SEMIBOLD_FONT_18;
+extern TTF_Font* SEMIBOLD_FONT_24;
 
 extern mutex MUTEX;
 

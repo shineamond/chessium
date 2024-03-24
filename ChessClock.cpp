@@ -136,18 +136,18 @@ void ChessClock::RenderTime()
     string white_time_left = temp.first;
     string black_time_left = temp.second;
 
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(RENDERER, 70, 70, 70, 255);
     SDL_Rect clear_area {560, 13, 63, 33}; // Black's clock area
     SDL_RenderFillRect(RENDERER, &clear_area);
     clear_area.y = 714; // White's clock area
     SDL_RenderFillRect(RENDERER, &clear_area);
 
     WrappedTexture black_clock_texture;
-    black_clock_texture.SetupTextureFromText(black_time_left, SDL_Color{0, 0, 0});
+    black_clock_texture.SetupTextureFromText(24, true, black_time_left, _WHITE_COLOR);
     black_clock_texture.Render(560, 13);
 
     WrappedTexture white_clock_texture;
-    white_clock_texture.SetupTextureFromText(white_time_left, SDL_Color{0, 0, 0});
+    white_clock_texture.SetupTextureFromText(24, true, white_time_left, _WHITE_COLOR);
     white_clock_texture.Render(560, 714);
 }
 
