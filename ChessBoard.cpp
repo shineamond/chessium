@@ -137,9 +137,6 @@ void ChessBoard::SetupDefaultBoard()
 
 void ChessBoard::DrawChessBoardAndPieces() const
 {
-    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
-    SDL_RenderClear(RENDERER);
-
     for (int row = 0; row < _BOARD_SIZE; row++)
     {
         for (int col = 0; col < _BOARD_SIZE; col++)
@@ -458,12 +455,20 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                             {
                                 if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _WHITE && clicked_square_row == 0)
                                 {
-                                    PromotePawn(clicked_square_col, _WHITE);
+                                    if (!(PromotePawn(clicked_square_col, _WHITE)))
+                                    {
+                                        message = _QUIT;
+                                        return message;
+                                    }
                                     white_pieces_count_[_PAWN] -= 1;
                                 }
                                 else if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK && clicked_square_row == 7)
                                 {
-                                    PromotePawn(clicked_square_col, _BLACK);
+                                    if (!(PromotePawn(clicked_square_col, _BLACK)))
+                                    {
+                                        message = _QUIT;
+                                        return message;
+                                    }
                                     black_pieces_count_[_PAWN] -= 1;
                                 }
                             }
@@ -557,6 +562,10 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
             }
         }
     }
+    else if (EVENT.type == SDL_QUIT)
+    {
+        message = _QUIT;
+    }
 
     return message;
 }
@@ -603,7 +612,7 @@ void ChessBoard::DestroyPiece(const int row, const int col)
 
 
 
-void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
+bool ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
 {
     SDL_Rect drawing_position;
     drawing_position.x = _SQUARE_SIZE * col;
@@ -709,12 +718,14 @@ void ChessBoard::PromotePawn(const int col, const _CHESS_PIECE_COLORS color)
                     }
                 }
             }
-//            else if (EVENT.type == SDL_QUIT)
-//            {
-//
-//            }
+            else if (EVENT.type == SDL_QUIT)
+            {
+                return false;
+            }
         }
     }
+
+    return true;
 }
 
 

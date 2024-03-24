@@ -52,7 +52,8 @@ enum _MESSAGES_FROM_CHESSBOARD
 {
     _NO_MESSAGE,
     _FINISHED_A_MOVE,
-    _GAME_OVER
+    _GAME_OVER,
+    _QUIT
 };
 
 //enum _BOARD_SQUARE_COLORS
@@ -77,6 +78,7 @@ extern TTF_Font* REGULAR_FONT_24;
 extern TTF_Font* SEMIBOLD_FONT_12;
 extern TTF_Font* SEMIBOLD_FONT_18;
 extern TTF_Font* SEMIBOLD_FONT_24;
+extern TTF_Font* SEMIBOLD_FONT_36;
 
 extern mutex MUTEX;
 

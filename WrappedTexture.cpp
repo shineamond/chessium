@@ -51,6 +51,10 @@ void WrappedTexture::SetupTextureFromText(const int font_size, const bool is_bol
         {
             text_surface = TTF_RenderText_Solid(SEMIBOLD_FONT_24, text.c_str(), text_color);
         }
+        else if (font_size == 36)
+        {
+            text_surface = TTF_RenderText_Solid(SEMIBOLD_FONT_36, text.c_str(), text_color);
+        }
     }
 
     if (text_surface == nullptr)

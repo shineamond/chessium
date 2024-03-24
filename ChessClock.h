@@ -13,9 +13,11 @@ class ChessClock
         int black_time_left_;
         bool is_running_;
         _CHESS_PIECE_COLORS side_to_move_;
+        int extra_time_after_each_move_;
 
     public:
-        ChessClock(const int input_time_limit = 0);
+        ChessClock();
+        ChessClock(const int time_limit, const int extra_time_after_each_move);
         void StartClock();
         void StopClock();
         void RunClock();
@@ -23,4 +25,7 @@ class ChessClock
         pair<string, string> ConvertTime();
         void RenderTime();
         int GetTimeLeft(const _CHESS_PIECE_COLORS side) const;
+        int GetTimeLimit() const;
+        void AddExtraTime();
+
 };

@@ -20,6 +20,7 @@ TTF_Font* REGULAR_FONT_24;
 TTF_Font* SEMIBOLD_FONT_12;
 TTF_Font* SEMIBOLD_FONT_18;
 TTF_Font* SEMIBOLD_FONT_24;
+TTF_Font* SEMIBOLD_FONT_36;
 
 mutex MUTEX;
 
@@ -33,10 +34,14 @@ int main(int argc, char* args[])
         exit(1);
     }
 
+    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
+    SDL_RenderClear(RENDERER);
     ClassicChessGame game;
-    game.Setup();
     game.DrawPlayers();
-    game.Start();
+    if (game.Setup())
+    {
+        game.Start();
+    }
 
 
     Quit();

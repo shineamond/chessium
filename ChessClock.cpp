@@ -2,22 +2,36 @@
 
 
 
-ChessClock::ChessClock(const int input_time_limit)
+ChessClock::ChessClock()
 {
-    time_limit_ = input_time_limit;
-    white_time_left_ = input_time_limit;
-    black_time_left_ = input_time_limit;
+    time_limit_ = 0;
+    white_time_left_ = 0;
+    black_time_left_ = 0;
     is_running_ = false;
-    bool side_to_move_ = _WHITE;
+    side_to_move_ = _WHITE;
+    extra_time_after_each_move_ = 0;
+}
+
+
+
+ChessClock::ChessClock(const int time_limit, const int extra_time_after_each_move)
+{
+    time_limit_ = time_limit;
+    white_time_left_ = time_limit;
+    black_time_left_ = time_limit;
+    extra_time_after_each_move_ = extra_time_after_each_move;
 }
 
 
 
 void ChessClock::StartClock()
 {
-    is_running_ = true;
-    thread clock_thread(&ChessClock::RunClock, this);
-    clock_thread.detach();
+    if (time_limit_ != 0)
+    {
+        is_running_ = true;
+        thread clock_thread(&ChessClock::RunClock, this);
+        clock_thread.detach();
+    }
 }
 
 
@@ -52,6 +66,7 @@ void ChessClock::RunClock()
         if (white_time_left_ == 0 || black_time_left_ == 0)
         {
             is_running_ = false;
+            return;
         }
 
         MUTEX.unlock();
@@ -81,10 +96,11 @@ void ChessClock::SetSideToMove(const _CHESS_PIECE_COLORS side_to_move)
 
 pair<string, string> ChessClock::ConvertTime()
 {
-    int white_minutes_left = white_time_left_ / (1000 * 60);
+    int white_hours_left = white_time_left_ / (1000 * 60 * 60);
+    int white_minutes_left = (white_time_left_ / (1000 * 60)) % 60;
     int white_seconds_left = (white_time_left_ % (1000 * 60)) / 1000;
 
-    string white_time_left = "";
+    string white_time_left = "0" + to_string(white_hours_left) + ':';
     if (white_minutes_left < 10)
     {
         white_time_left += ('0' + to_string(white_minutes_left) + ':');
@@ -103,10 +119,11 @@ pair<string, string> ChessClock::ConvertTime()
         white_time_left += (to_string(white_seconds_left));
     }
 
-    int black_minutes_left = black_time_left_ / (1000 * 60);
+    int black_hours_left = black_time_left_ / (1000 * 60 * 60);
+    int black_minutes_left = (black_time_left_ / (1000 * 60)) % 60;
     int black_seconds_left = (black_time_left_ % (1000 * 60)) / 1000;
 
-    string black_time_left = "";
+    string black_time_left = "0" + to_string(black_hours_left) + ':';
     if (black_minutes_left < 10)
     {
         black_time_left += ('0' + to_string(black_minutes_left) + ':');
@@ -137,18 +154,18 @@ void ChessClock::RenderTime()
     string black_time_left = temp.second;
 
     SDL_SetRenderDrawColor(RENDERER, 70, 70, 70, 255);
-    SDL_Rect clear_area {560, 13, 63, 33}; // Black's clock area
+    SDL_Rect clear_area {480, 13, 98, 33}; // Black's clock area
     SDL_RenderFillRect(RENDERER, &clear_area);
     clear_area.y = 714; // White's clock area
     SDL_RenderFillRect(RENDERER, &clear_area);
 
     WrappedTexture black_clock_texture;
     black_clock_texture.SetupTextureFromText(24, true, black_time_left, _WHITE_COLOR);
-    black_clock_texture.Render(560, 13);
+    black_clock_texture.Render(480, 13);
 
     WrappedTexture white_clock_texture;
     white_clock_texture.SetupTextureFromText(24, true, white_time_left, _WHITE_COLOR);
-    white_clock_texture.Render(560, 714);
+    white_clock_texture.Render(480, 714);
 }
 
 
@@ -165,4 +182,24 @@ int ChessClock::GetTimeLeft(const _CHESS_PIECE_COLORS side) const
     }
 
     return 0;
+}
+
+
+
+int ChessClock::GetTimeLimit() const
+{
+    return time_limit_;
+}
+
+
+void ChessClock::AddExtraTime()
+{
+    if (side_to_move_ == _BLACK)
+    {
+        black_time_left_ += extra_time_after_each_move_;
+    }
+    else if (side_to_move_ == _WHITE)
+    {
+        white_time_left_ += extra_time_after_each_move_;
+    }
 }

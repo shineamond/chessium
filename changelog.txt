@@ -1,7 +1,9 @@
 * General:
-- Render choosing time area
+- Players now can choose desired timer
 
 * Particular:
-- In CoreFunctions: open more font types
-- In class ClassicChessGame: modified Setup function to render choosing time area
-- In class Wrapped Texture: modified SetupTextureFromText function to setup text with different fonts and font sizes
+- In class ChessClock: added AddExtraTime function
+- In class ChessBoard: fixed unable to quit game while promoting pawns
+- In class ClassicChessGame:
+ + Added SetupTimer function
+ + Seperated game with timer and game without timer

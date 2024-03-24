@@ -81,6 +81,14 @@ bool Initialize()
         return false;
     }
 
+    SEMIBOLD_FONT_36 = TTF_OpenFont(_SEMIBOLD_FONT_PATH.c_str(), 36);
+    if (SEMIBOLD_FONT_36 == nullptr)
+    {
+        cout << "Couldn't load " << _SEMIBOLD_FONT_PATH << " font. TTF_Error: " << TTF_GetError() << endl;
+
+        return false;
+    }
+
     return true;
 }
 
@@ -126,6 +134,8 @@ void Quit()
     SEMIBOLD_FONT_18 = nullptr;
     TTF_CloseFont(SEMIBOLD_FONT_24);
     SEMIBOLD_FONT_24 = nullptr;
+    TTF_CloseFont(SEMIBOLD_FONT_36);
+    SEMIBOLD_FONT_36 = nullptr;
 
     SDL_DestroyRenderer(RENDERER);
     RENDERER = nullptr;

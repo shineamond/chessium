@@ -20,7 +20,9 @@ class ClassicChessGame
     public:
         ClassicChessGame();
         void DrawPlayers() const;
-        void Setup();
+        bool Setup();
         void Start();
-        void Run();
+        void RunGameWithTimer();
+        void RunGameWithoutTimer();
+        bool SetupTimer();
 };

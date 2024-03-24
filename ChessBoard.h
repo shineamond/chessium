@@ -39,7 +39,7 @@ class ChessBoard
         _MESSAGES_FROM_CHESSBOARD HandleGame(const _CHESS_PIECE_COLORS side_to_move);
         void PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color);
         void DestroyPiece(const int row, const int col);
-        void PromotePawn(const int col, const _CHESS_PIECE_COLORS color);
+        bool PromotePawn(const int col, const _CHESS_PIECE_COLORS color);
         pair<int, int> GetWhiteKingPosition() const;
         pair<int, int> GetBlackKingPosition() const;
         bool IsKingInCheck(const _CHESS_PIECE_COLORS king_color);
