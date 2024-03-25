@@ -21,8 +21,11 @@ TTF_Font* SEMIBOLD_FONT_12;
 TTF_Font* SEMIBOLD_FONT_18;
 TTF_Font* SEMIBOLD_FONT_24;
 TTF_Font* SEMIBOLD_FONT_36;
+//TTF_Font* SEMIBOLD_FONT_48;
 
 mutex MUTEX;
+
+bool in_gameloop = true;
 
 
 
@@ -34,15 +37,22 @@ int main(int argc, char* args[])
         exit(1);
     }
 
-    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
-    SDL_RenderClear(RENDERER);
     ClassicChessGame game;
-    game.DrawPlayers();
-    if (game.Setup())
+    while (in_gameloop)
     {
-        game.Start();
-    }
+        SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
+        SDL_RenderClear(RENDERER);
 
+        game.DrawPlayers();
+        if (game.Setup())
+        {
+            game.Start();
+        }
+        else
+        {
+            in_gameloop = false;
+        }
+    }
 
     Quit();
 

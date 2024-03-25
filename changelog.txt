@@ -1,9 +1,8 @@
 * General:
-- Players now can choose desired timer
+- The game now runs in a loop. Press any key to continue after each match.
+- Added scores
 
 * Particular:
-- In class ChessClock: added AddExtraTime function
-- In class ChessBoard: fixed unable to quit game while promoting pawns
 - In class ClassicChessGame:
- + Added SetupTimer function
- + Seperated game with timer and game without timer
+ + Added RenderScore function
+- Some modifications to other classes and main

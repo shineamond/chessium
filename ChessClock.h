@@ -27,5 +27,5 @@ class ChessClock
         int GetTimeLeft(const _CHESS_PIECE_COLORS side) const;
         int GetTimeLimit() const;
         void AddExtraTime();
-
+        //void ResetClock();
 };

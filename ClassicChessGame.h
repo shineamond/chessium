@@ -16,6 +16,8 @@ class ClassicChessGame
         _CHESS_PIECE_COLORS side_to_move_;
         //bool running_;
         bool game_over_;
+        int white_score_;
+        int black_score_;
 
     public:
         ClassicChessGame();
@@ -25,4 +27,6 @@ class ClassicChessGame
         void RunGameWithTimer();
         void RunGameWithoutTimer();
         bool SetupTimer();
+        void RenderScoreInMatch();
+        void RenderScoreWhileSelectingTimer();
 };

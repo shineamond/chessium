@@ -192,6 +192,7 @@ int ChessClock::GetTimeLimit() const
 }
 
 
+
 void ChessClock::AddExtraTime()
 {
     if (side_to_move_ == _BLACK)
@@ -203,3 +204,11 @@ void ChessClock::AddExtraTime()
         white_time_left_ += extra_time_after_each_move_;
     }
 }
+
+
+
+//void ChessClock::ResetClock()
+//{
+//    white_time_left_ = time_limit_;
+//    black_time_left_ = time_limit_;
+//}

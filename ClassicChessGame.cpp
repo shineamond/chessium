@@ -10,6 +10,8 @@ ClassicChessGame::ClassicChessGame()
     side_to_move_ = _WHITE;
     //running_ = false;
     game_over_ = true;
+    white_score_ = 0;
+    black_score_ = 0;
 }
 
 
@@ -35,14 +37,18 @@ void ClassicChessGame::DrawPlayers() const
 
 bool ClassicChessGame::Setup()
 {
+    board_.ResetBoard();
     board_.SetupDefaultBoard();
     board_.CountPieces();
     board_.DrawChessBoardAndPieces();
+
+    side_to_move_ = _WHITE;
 
     if (!SetupTimer())
     {
         return false;
     }
+    game_over_ = false;
 
     return true;
 }
@@ -52,6 +58,7 @@ bool ClassicChessGame::Setup()
 void ClassicChessGame::Start()
 {
     //running_ = true;
+    RenderScoreInMatch();
     game_over_ = false;
     if (clock_.GetTimeLimit() != 0)
     {
@@ -80,10 +87,13 @@ void ClassicChessGame::RunGameWithTimer()
             if (board_.IsOnlyKingLeft(_WHITE))
             {
                 cout << "Draw\n";
+                white_score_ += 1;
+                black_score_ += 1;
             }
             else
             {
                 cout << "White wins\n";
+                white_score_ += 1;
             }
 
             clock_.StopClock();
@@ -94,10 +104,13 @@ void ClassicChessGame::RunGameWithTimer()
             if (board_.IsOnlyKingLeft(_BLACK))
             {
                 cout << "Draw\n";
+                white_score_ += 1;
+                black_score_ += 1;
             }
             else
             {
                 cout << "Black wins\n";
+                black_score_ += 1;
             }
 
             clock_.StopClock();
@@ -122,15 +135,30 @@ void ClassicChessGame::RunGameWithTimer()
                         side_to_move_ = _WHITE;
                     }
                 }
-                else if (message == _GAME_OVER)
+                else if (message == _WHITE_WINS)
                 {
                     clock_.StopClock();
+                    white_score_ += 1;
+                    game_over_ = true;
+                }
+                else if (message == _BLACK_WINS)
+                {
+                    clock_.StopClock();
+                    black_score_ += 1;
+                    game_over_ = true;
+                }
+                else if (message == _DRAW)
+                {
+                    clock_.StopClock();
+                    white_score_ += 1;
+                    black_score_ += 1;
                     game_over_ = true;
                 }
                 else if (message == _QUIT)
                 {
                     clock_.StopClock();
                     game_over_ = true;
+                    in_gameloop = false;
                     return;
                 }
 
@@ -162,11 +190,28 @@ void ClassicChessGame::RunGameWithoutTimer()
                     side_to_move_ = _WHITE;
                 }
             }
-            else if (message == _GAME_OVER)
+            else if (message == _WHITE_WINS)
             {
+                white_score_ += 1;
                 game_over_ = true;
             }
-
+            else if (message == _BLACK_WINS)
+            {
+                black_score_ += 1;
+                game_over_ = true;
+            }
+            else if (message == _DRAW)
+            {
+                white_score_ += 1;
+                black_score_ += 1;
+                game_over_ = true;
+            }
+            else if (message == _QUIT)
+            {
+                game_over_ = true;
+                in_gameloop = false;
+                return;
+            }
             SDL_RenderPresent(RENDERER);
 
 
@@ -185,6 +230,8 @@ void ClassicChessGame::RunGameWithoutTimer()
 
 bool ClassicChessGame::SetupTimer()
 {
+    RenderScoreWhileSelectingTimer();
+
     SDL_SetRenderDrawColor(RENDERER, 100, 100, 100, 200); // LIGHT BLACK
     vector <SDL_Rect> all_button_areas;
 
@@ -426,4 +473,54 @@ bool ClassicChessGame::SetupTimer()
     SDL_RenderFillRect(RENDERER, &temp);
 
     return true;
+}
+
+
+
+void ClassicChessGame::RenderScoreInMatch()
+{
+    SDL_Rect player_pfp_position {700, 340, 80, 80};
+    SDL_RenderCopy(RENDERER, LoadTexture("media/anonymous.png"), nullptr, &player_pfp_position);
+    WrappedTexture player1_name;
+    player1_name.SetupTextureFromText(24, false, "White", _WHITE_COLOR);
+    player1_name.Render(700 + (80 - player1_name.GetWidth()) / 2, 440);
+
+    WrappedTexture player1_score;
+    player1_score.SetupTextureFromText(36, true, to_string(white_score_), _WHITE_COLOR);
+    player1_score.Render(800, 340 + (80 - player1_score.GetHeight()) / 2);
+
+    player_pfp_position = SDL_Rect {1000, 340, 80, 80};
+    SDL_RenderCopy(RENDERER, LoadTexture("media/anonymous.png"), nullptr, &player_pfp_position);
+    WrappedTexture player2_name;
+    player2_name.SetupTextureFromText(24, false, "Black", _WHITE_COLOR);
+    player2_name.Render(1000 + (80 - player2_name.GetWidth()) / 2, 440);
+
+    WrappedTexture player2_score;
+    player2_score.SetupTextureFromText(36, true, to_string(black_score_), _WHITE_COLOR);
+    player2_score.Render(1000 - 20 - player2_score.GetWidth(), 340 + (80 - player2_score.GetHeight()) / 2);
+}
+
+
+
+void ClassicChessGame::RenderScoreWhileSelectingTimer()
+{
+    SDL_Rect player_pfp_position {700, 60, 50, 50};
+    SDL_RenderCopy(RENDERER, LoadTexture("media/anonymous.png"), nullptr, &player_pfp_position);
+    WrappedTexture player1_name;
+    player1_name.SetupTextureFromText(18, false, "White", _WHITE_COLOR);
+    player1_name.Render(player_pfp_position.x + (player_pfp_position.w - player1_name.GetWidth()) / 2, 130);
+
+    WrappedTexture player1_score;
+    player1_score.SetupTextureFromText(24, true, to_string(white_score_), _WHITE_COLOR);
+    player1_score.Render(player_pfp_position.x + player_pfp_position.w + 20, player_pfp_position.y + (player_pfp_position.h - player1_score.GetHeight()) / 2);
+
+    player_pfp_position = SDL_Rect {980 - 50, 60, 50, 50};
+    SDL_RenderCopy(RENDERER, LoadTexture("media/anonymous.png"), nullptr, &player_pfp_position);
+    WrappedTexture player2_name;
+    player2_name.SetupTextureFromText(18, false, "Black", _WHITE_COLOR);
+    player2_name.Render(player_pfp_position.x + (player_pfp_position.w - player2_name.GetWidth()) / 2, 130);
+
+    WrappedTexture player2_score;
+    player2_score.SetupTextureFromText(24, true, to_string(black_score_), _WHITE_COLOR);
+    player2_score.Render(player_pfp_position.x - 20 - player2_score.GetWidth(), player_pfp_position.y + (player_pfp_position.h - player2_score.GetHeight()) / 2);
 }

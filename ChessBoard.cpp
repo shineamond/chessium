@@ -131,6 +131,7 @@ void ChessBoard::SetupDefaultBoard()
     pieces_positions_[7][7] = new Rook(_WHITE);
 
     original_position_.AddPositionsRecord(pieces_positions_);
+    CountPieces();
 }
 
 
@@ -155,7 +156,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
     if (IsDrawInsufficientMaterials())
     {
         cout << "Draw\n";
-        message = _GAME_OVER;
+        message = _DRAW;
 
         return message;
     }
@@ -200,16 +201,17 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
 
     if (!(has_legal_moves_ || en_passant_available_))
     {
-        message = _GAME_OVER;
         if (IsKingInCheck(side_to_move))
         {
             switch (side_to_move)
             {
                 case _BLACK:
                     cout << "White wins\n";
+                    message = _WHITE_WINS;
                     break;
                 case _WHITE:
                     cout << "Black wins\n";
+                    message = _BLACK_WINS;
                     break;
                 default:
                     break;
@@ -218,6 +220,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
         else
         {
             cout << "Draw\n";
+            message = _DRAW;
         }
 
         return message;
@@ -271,7 +274,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                 }
                 else
                 {
-                    bool is_move = false, is_capture = false, is_castle = false;
+//                    bool is_move = false, is_capture = false, is_castle = false;
                     for (unsigned int i = 0; i < temp.size(); i++)
                     {
                         if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a legal move
@@ -287,7 +290,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                             {
                                 if (temp[i].second == _MOVE) // Move to an empty square
                                 {
-                                    is_move = true;
+//                                    is_move = true;
 
                                     // New square
                                     pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
@@ -295,7 +298,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                                 }
                                 else if (temp[i].second == _CAPTURE) // Take another piece
                                 {
-                                    is_capture = true;
+//                                    is_capture = true;
 
                                     if (pieces_positions_[clicked_square_row][clicked_square_col] -> GetPieceColor() == _BLACK)
                                     {
@@ -316,7 +319,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                                 }
                                 else if (temp[i].second == _EN_PASSANT)
                                 {
-                                    is_capture = true;
+//                                    is_capture = true;
 
                                     // New square
                                     pieces_positions_[clicked_square_row][clicked_square_col] = pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second];
@@ -353,7 +356,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                             }
                             else if (temp[i].second == _CASTLE)
                             {
-                                is_castle = true;
+//                                is_castle = true;
 
                                 if (clicked_square_row == 0) // Black castles
                                 {
@@ -503,7 +506,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                             if (IsDrawThreefoldRepetition())
                             {
                                 cout << "Draw\n";
-                                message = _GAME_OVER;
+                                message = _DRAW;
 
                                 return message;
                             }
@@ -513,7 +516,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                                 if (IsDraw50Moves())
                                 {
                                     cout << "Draw\n";
-                                    message = _GAME_OVER;
+                                    message = _DRAW;
 
                                     return message;
                                 }
@@ -524,7 +527,7 @@ _MESSAGES_FROM_CHESSBOARD ChessBoard::HandleGame(const _CHESS_PIECE_COLORS side_
                         }
                     }
 
-                    if (!(is_move || is_capture || is_castle))
+//                    if (!(is_move || is_capture || is_castle))
                     {
                         if (pieces_positions_[clicked_square_row][clicked_square_col] != nullptr)
                         {
@@ -1444,4 +1447,25 @@ bool ChessBoard::IsOnlyKingLeft(const _CHESS_PIECE_COLORS side) const
     }
 
     return false;
+}
+
+
+
+void ChessBoard::ResetBoard()
+{
+    for (int row = 0; row < _BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < _BOARD_SIZE; col++)
+        {
+            DestroyPiece(row, col);
+        }
+    }
+
+    clicked_squares_list_.clear();
+    legal_moves_set_ = false;
+    has_legal_moves_ = false;
+    moves_log_.clear();
+    no_capture_or_pawns_moves_ = 0;
+    positions_repetition_times_.clear();
+    en_passant_available_ = false;
 }

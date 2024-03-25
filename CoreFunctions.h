@@ -52,7 +52,9 @@ enum _MESSAGES_FROM_CHESSBOARD
 {
     _NO_MESSAGE,
     _FINISHED_A_MOVE,
-    _GAME_OVER,
+    _WHITE_WINS,
+    _BLACK_WINS,
+    _DRAW,
     _QUIT
 };
 
@@ -79,8 +81,11 @@ extern TTF_Font* SEMIBOLD_FONT_12;
 extern TTF_Font* SEMIBOLD_FONT_18;
 extern TTF_Font* SEMIBOLD_FONT_24;
 extern TTF_Font* SEMIBOLD_FONT_36;
+//extern TTF_Font* SEMIBOLD_FONT_48;
 
 extern mutex MUTEX;
+
+extern bool in_gameloop;
 
 bool Initialize();
 SDL_Texture* LoadTexture(const string image_path);
