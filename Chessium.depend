@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
-1711375830 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1711460548 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
-	"ChessBoard.h"
+	"ClassicChessBoard.h"
 	"ChessPiece.h"
 	"Pawn.h"
 	"Knight.h"
@@ -13,6 +13,8 @@
 	"WrappedTexture.h"
 	"ChessClock.h"
 	"ClassicChessGame.h"
+	"SpellChessBoard.h"
+	"ChessBoard.h"
 
 1711375913 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.h
 	<iostream>
@@ -27,10 +29,10 @@
 1711371371 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
 	"CoreFunctions.h"
 
-1711375006 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+1711460279 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
 	"ChessBoard.h"
 
-1711372953 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
+1711460300 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -103,19 +105,48 @@
 1711371360 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\wrappedtexture.cpp
 	"WrappedTexture.h"
 
-1711372653 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessclock.cpp
+1711376267 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessclock.cpp
 	"ChessClock.h"
 
 1711376262 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessclock.h
 	"CoreFunctions.h"
 	"WrappedTexture.h"
 
-1711372398 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessgame.h
+1711457702 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessgame.h
 	"CoreFunctions.h"
-	"ChessBoard.h"
+	"ClassicChessBoard.h"
 	"ChessClock.h"
 	"WrappedTexture.h"
 
-1711375616 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessgame.cpp
+1711457708 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessgame.cpp
 	"ClassicChessGame.h"
+
+1711462795 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.h
+	"CoreFunctions.h"
+	"ChessPiece.h"
+	"Pawn.h"
+	"Knight.h"
+	"Bishop.h"
+	"Rook.h"
+	"Queen.h"
+	"King.h"
+	"MoveInformation.h"
+	"ChessBoard.h"
+
+1711463971 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.cpp
+	"ClassicChessBoard.h"
+
+1711460433 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.cpp
+	"SpellChessBoard.h"
+
+1711460428 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.h
+	"CoreFunctions.h"
+	"ChessPiece.h"
+	"Pawn.h"
+	"Knight.h"
+	"Bishop.h"
+	"Rook.h"
+	"Queen.h"
+	"King.h"
+	"ChessBoard.h"
 

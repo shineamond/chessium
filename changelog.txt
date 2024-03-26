@@ -1,8 +1,12 @@
 * General:
-- The game now runs in a loop. Press any key to continue after each match.
-- Added scores
+- Renamed class ChessBoard to ClassicChessBoard
+- Added class SpellChessBoard. Spell mode will be added in the future
+- Added class ChessBoard, whose inheritors are class ClassicChessBoard and SpellChessBoard
+- The square on which a king in check is standing will be colored red
 
 * Particular:
-- In class ClassicChessGame:
- + Added RenderScore function
-- Some modifications to other classes and main
+- Moved some functions from class ClassicChessBoard to class ChessBoard
+- Forming class SpellChessBoard
+- In class ClassicChessBoard
+ + Added DrawSquareAndPieceIfKingInCheck function
+ + Modified HandleGame function

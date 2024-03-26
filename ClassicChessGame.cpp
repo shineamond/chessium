@@ -4,7 +4,7 @@
 
 ClassicChessGame::ClassicChessGame()
 {
-    board_ = ChessBoard();
+    board_ = ClassicChessBoard();
     clock_ = ChessClock(0, 0);
     side_to_move_first_ = _WHITE;
     side_to_move_ = _WHITE;

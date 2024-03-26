@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreFunctions.h"
-#include "ChessBoard.h"
+#include "ClassicChessBoard.h"
 #include "ChessClock.h"
 #include "WrappedTexture.h"
 
@@ -10,7 +10,7 @@
 class ClassicChessGame
 {
     private:
-        ChessBoard board_;
+        ClassicChessBoard board_;
         ChessClock clock_;
         _CHESS_PIECE_COLORS side_to_move_first_;
         _CHESS_PIECE_COLORS side_to_move_;

@@ -1,5 +1,5 @@
 #include "CoreFunctions.h"
-#include "ChessBoard.h"
+#include "ClassicChessBoard.h"
 #include "ChessPiece.h"
 #include "Pawn.h"
 #include "Knight.h"
@@ -11,6 +11,8 @@
 #include "WrappedTexture.h"
 #include "ChessClock.h"
 #include "ClassicChessGame.h"
+#include "SpellChessBoard.h"
+#include "ChessBoard.h"
 
 SDL_Window* WINDOW = nullptr;
 SDL_Renderer* RENDERER = nullptr;
@@ -53,6 +55,16 @@ int main(int argc, char* args[])
             in_gameloop = false;
         }
     }
+
+//    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
+//    SDL_RenderClear(RENDERER);
+//    SpellChessBoard spell_board;
+//    spell_board.DrawChessBoardAndPieces();
+//
+//    SDL_RenderPresent(RENDERER);
+//    WaitUntilKeyPressed();
+
+
 
     Quit();
 
