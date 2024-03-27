@@ -40,6 +40,8 @@
 		<Unit filename="ChessClock.h" />
 		<Unit filename="ChessPiece.cpp" />
 		<Unit filename="ChessPiece.h" />
+		<Unit filename="ClassicChessBoard.cpp" />
+		<Unit filename="ClassicChessBoard.h" />
 		<Unit filename="ClassicChessGame.cpp" />
 		<Unit filename="ClassicChessGame.h" />
 		<Unit filename="CoreFunctions.cpp" />
@@ -56,6 +58,8 @@
 		<Unit filename="Queen.h" />
 		<Unit filename="Rook.cpp" />
 		<Unit filename="Rook.h" />
+		<Unit filename="SpellChessBoard.cpp" />
+		<Unit filename="SpellChessBoard.h" />
 		<Unit filename="WrappedTexture.cpp" />
 		<Unit filename="WrappedTexture.h" />
 		<Unit filename="main.cpp" />

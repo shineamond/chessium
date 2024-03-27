@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1711460548 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
+1711529861 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\main.cpp
 	"CoreFunctions.h"
 	"ClassicChessBoard.h"
 	"ChessPiece.h"
@@ -29,10 +29,10 @@
 1711371371 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\corefunctions.cpp
 	"CoreFunctions.h"
 
-1711460279 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
+1711526378 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.cpp
 	"ChessBoard.h"
 
-1711460300 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
+1711526354 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\chessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -121,7 +121,7 @@
 1711457708 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessgame.cpp
 	"ClassicChessGame.h"
 
-1711462795 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.h
+1711526346 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"
@@ -133,13 +133,13 @@
 	"MoveInformation.h"
 	"ChessBoard.h"
 
-1711463971 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.cpp
+1711529686 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\classicchessboard.cpp
 	"ClassicChessBoard.h"
 
-1711460433 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.cpp
+1711529748 source:c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.cpp
 	"SpellChessBoard.h"
 
-1711460428 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.h
+1711529095 c:\users\minh\desktop\c++ lab\lap trinh nang cao\bai tap lon\chessium\spellchessboard.h
 	"CoreFunctions.h"
 	"ChessPiece.h"
 	"Pawn.h"

@@ -56,15 +56,33 @@ int main(int argc, char* args[])
         }
     }
 
+//    bool quit = false;
 //    SDL_SetRenderDrawColor(RENDERER, 40, 40, 40, 0); // BLACK
 //    SDL_RenderClear(RENDERER);
 //    SpellChessBoard spell_board;
+//    spell_board.PutPiece(5, 3, _QUEEN, _WHITE);
+//    spell_board.PutPiece(4, 4, _ROOK, _BLACK);
+//    spell_board.PutPiece(0, 5, _BISHOP, _WHITE);
+//    spell_board.PutPiece(7, 7, _KING, _BLACK);
+//    spell_board.PutPiece(4, 2, _KNIGHT, _WHITE);
+//    spell_board.PutPiece(1, 4, _PAWN, _BLACK);
 //    spell_board.DrawChessBoardAndPieces();
 //
-//    SDL_RenderPresent(RENDERER);
-//    WaitUntilKeyPressed();
+//    while(!quit)
+//    {
+//        while(SDL_PollEvent(&EVENT))
+//        {
+//            _MESSAGES_FROM_CHESSBOARD message = spell_board.HandleGame();
+//            if (message == _QUIT)
+//            {
+//                quit = true;
+//            }
+//        }
+//
+//        SDL_RenderPresent(RENDERER);
+//    }
 
-
+    //WaitUntilKeyPressed();
 
     Quit();
 

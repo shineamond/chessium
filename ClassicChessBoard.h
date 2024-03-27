@@ -17,7 +17,7 @@ class ClassicChessBoard : public ChessBoard
 {
     private:
         //ChessPiece* pieces_positions_[_BOARD_SIZE][_BOARD_SIZE];
-        vector <pair <int, int>> clicked_squares_list_;
+        //vector <pair <int, int>> clicked_squares_list_;
         bool legal_moves_set_;
         bool has_legal_moves_;
         vector <MoveInformation> moves_log_;
@@ -34,12 +34,12 @@ class ClassicChessBoard : public ChessBoard
         void DrawDefaultColorSquare(const int row, const int col) const override;
 //        void DrawClickedSquare(const int row, const int col) const;
 //        void DrawPiece(const int row, const int col) const;
-        void DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const;
+//        void DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const;
         void SetupDefaultBoard();
 //        void DrawChessBoardAndPieces() const override;
         _MESSAGES_FROM_CHESSBOARD HandleGame(const _CHESS_PIECE_COLORS side_to_move);
-        void PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color);
-        void DestroyPiece(const int row, const int col);
+//        void PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color);
+//        void DestroyPiece(const int row, const int col);
         bool PromotePawn(const int col, const _CHESS_PIECE_COLORS color);
         pair<int, int> GetWhiteKingPosition() const;
         pair<int, int> GetBlackKingPosition() const;

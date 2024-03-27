@@ -1,12 +1,6 @@
 * General:
-- Renamed class ChessBoard to ClassicChessBoard
-- Added class SpellChessBoard. Spell mode will be added in the future
-- Added class ChessBoard, whose inheritors are class ClassicChessBoard and SpellChessBoard
-- The square on which a king in check is standing will be colored red
+- Pieces on SpellChessBoard can move normally
 
 * Particular:
 - Moved some functions from class ClassicChessBoard to class ChessBoard
-- Forming class SpellChessBoard
-- In class ClassicChessBoard
- + Added DrawSquareAndPieceIfKingInCheck function
- + Modified HandleGame function
+- In class SpellChessBoard: Added HandleGame function

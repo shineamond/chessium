@@ -82,21 +82,21 @@ void ClassicChessBoard::DrawDefaultColorSquare(const int row, const int col) con
 
 
 
-void ClassicChessBoard::DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const
-{
-    SDL_Rect drawing_position {col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
-
-    if (move_type == _MOVE || move_type == _CASTLE)
-    {
-        SDL_RenderCopy(RENDERER, LoadTexture("media/movable_square.png"), nullptr, &drawing_position);
-    }
-    else if (move_type == _CAPTURE || move_type == _EN_PASSANT)
-    {
-        DrawDefaultColorSquare(row, col);
-        SDL_RenderCopy(RENDERER, LoadTexture("media/takeable_square.png"), nullptr, &drawing_position);
-        DrawPiece(row, col);
-    }
-}
+//void ClassicChessBoard::DrawRelevantSquares(const int row, const int col, const _MOVE_TYPES move_type) const
+//{
+//    SDL_Rect drawing_position {col * _SQUARE_SIZE, 60 + row * _SQUARE_SIZE, _SQUARE_SIZE, _SQUARE_SIZE};
+//
+//    if (move_type == _MOVE || move_type == _CASTLE)
+//    {
+//        SDL_RenderCopy(RENDERER, LoadTexture("media/movable_square.png"), nullptr, &drawing_position);
+//    }
+//    else if (move_type == _CAPTURE || move_type == _EN_PASSANT)
+//    {
+//        DrawDefaultColorSquare(row, col);
+//        SDL_RenderCopy(RENDERER, LoadTexture("media/takeable_square.png"), nullptr, &drawing_position);
+//        DrawPiece(row, col);
+//    }
+//}
 
 
 
@@ -285,7 +285,7 @@ _MESSAGES_FROM_CHESSBOARD ClassicChessBoard::HandleGame(const _CHESS_PIECE_COLOR
                         if (clicked_square_row == temp[i].first.first && clicked_square_col == temp[i].first.second) // Click a legal move
                         {
                             // Old relevant squares
-                            for (int j = 0; j < (int) temp.size(); j++)
+                            for (unsigned int j = 0; j < temp.size(); j++)
                             {
                                 DrawDefaultColorSquare(temp[j].first.first, temp[j].first.second);
                                 DrawPiece(temp[j].first.first, temp[j].first.second);
@@ -563,6 +563,7 @@ _MESSAGES_FROM_CHESSBOARD ClassicChessBoard::HandleGame(const _CHESS_PIECE_COLOR
                                 {
                                     DrawSquareAndPieceIfKingInCheck(pieces_positions_[clicked_squares_list_[0].first][clicked_squares_list_[0].second] -> GetPieceColor());
                                 }
+
                                 clicked_squares_list_.clear();
 
                                 // New clicked square
@@ -595,43 +596,43 @@ _MESSAGES_FROM_CHESSBOARD ClassicChessBoard::HandleGame(const _CHESS_PIECE_COLOR
 
 
 
-void ClassicChessBoard::PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color)
-{
-    switch (type)
-    {
-        case _PAWN:
-            pieces_positions_[row][col] = new Pawn(color);
-            break;
-        case _KNIGHT:
-            pieces_positions_[row][col] = new Knight(color);
-            break;
-        case _BISHOP:
-            pieces_positions_[row][col] = new Bishop(color);
-            break;
-        case _ROOK:
-            pieces_positions_[row][col] = new Rook(color);
-            break;
-        case _QUEEN:
-            pieces_positions_[row][col] = new Queen(color);
-            break;
-        case _KING:
-            pieces_positions_[row][col] = new King(color);
-            break;
-        default:
-            break;
-    }
-}
-
-
-
-void ClassicChessBoard::DestroyPiece(const int row, const int col)
-{
-    if (pieces_positions_[row][col] != nullptr)
-    {
-        delete pieces_positions_[row][col];
-        pieces_positions_[row][col] = nullptr;
-    }
-}
+//void ClassicChessBoard::PutPiece(const int row, const int col, const _CHESS_PIECE_TYPES type, const _CHESS_PIECE_COLORS color)
+//{
+//    switch (type)
+//    {
+//        case _PAWN:
+//            pieces_positions_[row][col] = new Pawn(color);
+//            break;
+//        case _KNIGHT:
+//            pieces_positions_[row][col] = new Knight(color);
+//            break;
+//        case _BISHOP:
+//            pieces_positions_[row][col] = new Bishop(color);
+//            break;
+//        case _ROOK:
+//            pieces_positions_[row][col] = new Rook(color);
+//            break;
+//        case _QUEEN:
+//            pieces_positions_[row][col] = new Queen(color);
+//            break;
+//        case _KING:
+//            pieces_positions_[row][col] = new King(color);
+//            break;
+//        default:
+//            break;
+//    }
+//}
+//
+//
+//
+//void ClassicChessBoard::DestroyPiece(const int row, const int col)
+//{
+//    if (pieces_positions_[row][col] != nullptr)
+//    {
+//        delete pieces_positions_[row][col];
+//        pieces_positions_[row][col] = nullptr;
+//    }
+//}
 
 
 
@@ -1337,14 +1338,6 @@ bool ClassicChessBoard::IsDrawThreefoldRepetition()
 
 
 
-//void ClassicChessBoard::SetSideToMoveFirst(const _CHESS_PIECE_COLORS side_to_move_first)
-//{
-//    side_to_move_first_ = side_to_move_first;
-//    side_to_move_ = side_to_move_first_;
-//}
-
-
-
 void ClassicChessBoard::CountPieces()
 {
     for (int i = 0; i < _TOTAL; i++)
@@ -1407,7 +1400,7 @@ bool ClassicChessBoard::IsDrawInsufficientMaterials()
             pair <int, int> black_bishop_position = FindBishopPosition(_BLACK);
             pair <int, int> white_bishop_position = FindBishopPosition(_WHITE);
 
-            if (((black_bishop_position.first + black_bishop_position.second) % 2) == ((white_bishop_position.first + white_bishop_position.second) % 2)) // Both bishop are on the same color square
+            if (((black_bishop_position.first + black_bishop_position.second) % 2) == ((white_bishop_position.first + white_bishop_position.second) % 2)) // Both bishop are on the same color squares
             {
                 return true;
             }
@@ -1439,13 +1432,6 @@ pair<int, int> ClassicChessBoard::FindBishopPosition(const _CHESS_PIECE_COLORS b
         }
     }
 }
-
-
-
-//_CHESS_PIECE_COLORS ClassicChessBoard::GetSideToMove() const
-//{
-//    return side_to_move_;
-//}
 
 
 
